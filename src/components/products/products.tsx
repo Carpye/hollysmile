@@ -6,7 +6,7 @@ import { ProductCard } from "./product-card"
 
 const Products = ({ products }: { products: Product[] }) => {
   return (
-    <div>
+    <div className="grid auto-rows-min grid-cols-3 gap-8">
       {products.map((product) => (
         <ProductCard
           key={product.id}
