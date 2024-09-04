@@ -1,4 +1,5 @@
 "use client"
+import { prisma } from "@/lib/prisma"
 import { createContext, useContext, useEffect, useState } from "react"
 
 type CartItem = {
@@ -6,12 +7,13 @@ type CartItem = {
   name: string
   price: number
   quantity: number
-  image: string
+  image: string | null
 }
 
 type CartContextType = {
   cart: CartItem[]
   removeCartItem: (id: string | number) => void
+  addCartItem: (id: number) => void
   // Add other cart operations here, e.g., addCartItem, updateQuantity, etc.
 }
 
@@ -73,10 +75,21 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
   const removeCartItem = (id: string | number) => {
     setCart((prevCart) => prevCart.filter((item) => item.id !== id))
   }
+  const addCartItem = async (id: number) => {
+    const weirdItem: CartItem = {
+      id: id,
+      name: "Koszulka",
+      price: 50,
+      quantity: 1,
+      image: "https://via.placeholder.com/150",
+    }
+    setCart((prevCart) => [...prevCart, weirdItem])
+  }
 
   const value = {
     cart,
     removeCartItem,
+    addCartItem,
   }
   return <CartContext.Provider value={value}>{children}</CartContext.Provider>
 }
