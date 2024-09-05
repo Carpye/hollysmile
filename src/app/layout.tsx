@@ -18,10 +18,10 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" className="scroll-smooth">
       <body className={inter.className}>
         <CartProvider>
-          <div className="mx-auto max-w-screen-xl">
+          <div className="">
             <Navbar />
             {children}
             <Footer />

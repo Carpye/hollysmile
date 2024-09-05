@@ -6,7 +6,7 @@ type CartItem = {
   id: string | number
   name: string
   price: number
-  quantity: number
+  stock: number
   image: string | null
 }
 
@@ -14,7 +14,7 @@ type CartContextType = {
   cart: CartItem[]
   removeCartItem: (id: string | number) => void
   addCartItem: (id: number) => void
-  // Add other cart operations here, e.g., addCartItem, updateQuantity, etc.
+  // Add other cart operations here, e.g., addCartItem, updatestock, etc.
 }
 
 const CartContext = createContext<CartContextType | undefined>(undefined)
@@ -27,28 +27,28 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
       id: "1",
       name: "Koszulka",
       price: 50,
-      quantity: 1,
+      stock: 1,
       image: "https://via.placeholder.com/150",
     },
     {
       id: "2",
       name: "Buty",
       price: 150,
-      quantity: 2,
+      stock: 2,
       image: "https://via.placeholder.com/150",
     },
     {
       id: "3",
       name: "Bluza",
       price: 200,
-      quantity: 1,
+      stock: 1,
       image: "https://via.placeholder.com/150",
     },
     {
       id: "4",
       name: "Spodnie",
       price: 70,
-      quantity: 1,
+      stock: 1,
       image: "https://via.placeholder.com/150",
     },
   ]
@@ -80,7 +80,7 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
       id: id,
       name: "Koszulka",
       price: 50,
-      quantity: 1,
+      stock: 1,
       image: "https://via.placeholder.com/150",
     }
     setCart((prevCart) => [...prevCart, weirdItem])

@@ -28,13 +28,13 @@ const CartButton = () => {
       }
       openTrigger={
         <Button variant={"ghost"} size={"icon"}>
-          <ShoppingCart className="w-6 h-6" />
+          <ShoppingCart className="h-6 w-6" />
         </Button>
       }
       header="Koszyk"
     >
       {/* CART ITEMS */}
-      <div className="flex flex-col gap-6 max-h-full">
+      <div className="flex max-h-full flex-col gap-6">
         {cart.length === 0 ? (
           <p>Koszyk jest pusty</p>
         ) : (
@@ -44,8 +44,8 @@ const CartButton = () => {
                 key={item.id}
                 name={item.name}
                 price={item.price}
-                quantity={item.quantity}
-                image={item.image}
+                stock={item.stock}
+                image={item.image ?? ""}
               />
             ))}
           </div>
@@ -58,12 +58,12 @@ const CartButton = () => {
 function CartItemCard({
   name,
   price,
-  quantity,
+  stock,
   image,
 }: {
   name: string
   price: number
-  quantity: number
+  stock: number
   image: string
 }) {
   return (
@@ -76,7 +76,7 @@ function CartItemCard({
         <p>{price}</p>
       </div>
       <div>
-        <p>{quantity}</p>
+        <p>{stock}</p>
       </div>
     </div>
   )

@@ -5,16 +5,21 @@ import { Separator } from "./ui/separator"
 
 export default function Footer() {
   return (
-    <div className="flex w-full flex-col justify-between gap-2 bg-[#292B37] px-8 pt-4 text-white">
-      <div className="flex h-full justify-between px-8">
-        <div className="flex h-full flex-col justify-between gap-4 p-4">
-          <Image src={"/logo.png"} alt="XD" width={128} height={64} />
-          <p className="w-80 font-light">
+    <div className="w-full bg-[#292B37] px-4 pt-4 text-white sm:px-8">
+      <div className="flex flex-col justify-between gap-8 md:flex-row">
+        <div className="flex flex-col gap-4 py-4">
+          <Image
+            src={"/assets/logo-white.png"}
+            alt="XD"
+            width={128}
+            height={64}
+          />
+          <p className="max-w-xs font-light text-slate-300">
             Oferujemy innowacyjne szczoteczki do zębów, które dbają o zdrowie i
             piękny uśmiech każdego dnia.
           </p>
         </div>
-        <div className="flex gap-24">
+        <div className="flex flex-wrap gap-8 sm:gap-16">
           <div className="flex flex-col gap-4 py-2">
             <h1 className="text-lg">Strona Główna</h1>
             <ul className="flex flex-col gap-4 text-primary">
@@ -27,30 +32,34 @@ export default function Footer() {
             <h1 className="text-lg">Kontakt</h1>
             <ul className="flex flex-col gap-4">
               <span className="flex items-center justify-start gap-2 text-sm text-primary">
-                <Phone />
+                <Phone size={16} />
                 +48 123 456 789
               </span>
               <span className="flex items-center justify-start gap-2 text-sm text-primary">
-                <Mail />
+                <Mail size={16} />
                 happysmile@gmail.com
               </span>
               <span className="flex items-center justify-start gap-2 text-sm text-primary">
-                <Pin />
+                <Pin size={16} />
                 12-345 Szczecin, ul. Cicha
               </span>
             </ul>
           </div>
         </div>
       </div>
-
-      <div>
+      <div className="py-4">
         <Separator className="bg-slate-500" />
-        <div className="flex justify-between p-2 text-slate-500">
+        <div className="flex justify-between gap-4 p-2 text-xs text-slate-500 sm:text-base">
           <p>© Holly Smile - 2024 Wszelkie prawa zastrzeżone.</p>
           <p>
             Made with 🔥Passion🔥 by{" "}
-            <Link href={"https://github.com/Carpye"}>Kacper</Link> &{" "}
-            <Link href={"https://github.com/Verti1234"}>Krzysztof</Link>
+            <Link href={"https://github.com/Carpye"} className="underline">
+              Kacper Kozłowski
+            </Link>{" "}
+            &{" "}
+            <Link href={"https://github.com/Verti1234"} className="underline">
+              Krzysztof Godyń
+            </Link>
           </p>
         </div>
       </div>

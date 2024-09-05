@@ -3,20 +3,23 @@ import Image from "next/image"
 import { Button } from "../ui/button"
 import { useCart } from "../cart/cart-context"
 import { ShoppingBasket, Trash } from "lucide-react"
+import Link from "next/link"
 
 export function ProductCard({
   id,
   name,
   price,
-  quantity,
+  stock,
   image,
   variant = "card",
+  description,
 }: {
   id: string | number
   name: string
   price: number
-  quantity: number
+  stock: number
   image: string
+  description?: string
   variant?: "card" | "list"
 }) {
   const { removeCartItem, addCartItem } = useCart()
@@ -30,7 +33,7 @@ export function ProductCard({
         <div className="p-4">
           <h2>{name}</h2>
           <p>{price}</p>
-          <p>{quantity}</p>
+          <p>{stock}</p>
           <Button
             size={"icon"}
             variant={"destructive"}
@@ -41,20 +44,22 @@ export function ProductCard({
         </div>
       </div>
     )
-
+  //h-[500px] w-[376px]
   return (
-    <div className="flex h-min w-60 gap-4 border">
-      <div className="relative h-[150px] w-[150px] object-cover">
-        <Image src={image} alt={name} fill />
+    <Link
+      href={`/produkty/${id}`}
+      className="relative flex w-full flex-col overflow-hidden rounded-xl border-2 border-primary"
+    >
+      <div className="relative aspect-square w-full">
+        <Image alt="Zdjęcie produktu" src={image} fill />
       </div>
-      <div className="p-4">
-        <h2>{name}</h2>
-        <p>{price}</p>
-        <p>{quantity}</p>
-        <Button size={"icon"} onClick={() => addCartItem(Number(id))}>
-          <ShoppingBasket />
-        </Button>
+      <div className="relative min-h-16 w-full bg-slate-100 p-2">
+        <h3 className="text-2xl font-medium">{name}</h3>
+        <p className="text-pretty text-xs">{description}</p>
+        <div className="absolute -top-8 right-2 rounded-full bg-primary px-2 py-1 text-xs text-white">
+          {price} zł
+        </div>
       </div>
-    </div>
+    </Link>
   )
 }

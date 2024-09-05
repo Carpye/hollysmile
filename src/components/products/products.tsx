@@ -14,7 +14,7 @@ const Products = ({ products }: { products: Product[] }) => {
           price={product.price}
           image={product.image ?? ""}
           id={product.id}
-          quantity={1}
+          stock={1}
           variant="card"
         />
       ))}

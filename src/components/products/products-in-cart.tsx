@@ -12,8 +12,8 @@ const ProductsInCart = () => {
       key={item.id}
       name={item.name}
       price={item.price}
-      quantity={item.quantity}
-      image={item.image}
+      stock={item.stock}
+      image={item.image ?? ""}
       id={item.id}
     />
   ))
