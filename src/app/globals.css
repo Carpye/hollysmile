@@ -89,15 +89,26 @@
     @apply bg-background text-foreground;
   }
 }
-@keyframes zoomIn {
-  0% {
-    transform: scale(1);
-  }
-  100% {
-    transform: scale(1.1);
-  }
+.slide {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  transform: scale(1); /* Zaczyna od oryginalnej skali */
+  transition:
+    opacity 1s ease-in-out,
+    transform 5s ease-in-out; /* Dodano płynne przejście transform */
+  background-size: cover;
+  background-position: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
 }
 
-.zoom-animation {
-  animation: zoomIn 5s linear alternate;
+.active {
+  opacity: 1;
+  transform: scale(1.1); /* Skaluje do 110% */
 }
