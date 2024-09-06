@@ -196,6 +196,7 @@ const CarouselItem = React.forwardRef<
       className={cn(
         "min-w-0 shrink-0 grow-0 basis-full",
         orientation === "horizontal" ? "pl-4" : "pt-4",
+        "zoom-animation",
         className
       )}
       {...props}
@@ -264,7 +265,7 @@ CarouselNext.displayName = "CarouselNext"
 
 const CarouselIndicators = () => {
   const { selectedIndex, totalSlides, api } = useCarousel()
-  console.log(selectedIndex)
+  // console.log(selectedIndex)
 
   return (
     <div className="absolute -bottom-6 left-1/2 flex -translate-x-1/2 transform space-x-2">
@@ -284,10 +285,6 @@ const CarouselIndicators = () => {
     </div>
   )
 }
-const CarouselIndex = () => {
-  const { selectedIndex } = useCarousel()
-  return selectedIndex
-}
 
 export {
   type CarouselApi,
@@ -297,5 +294,4 @@ export {
   CarouselPrevious,
   CarouselNext,
   CarouselIndicators,
-  CarouselIndex,
 }

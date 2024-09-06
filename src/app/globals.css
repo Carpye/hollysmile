@@ -99,5 +99,5 @@
 }
 
 .zoom-animation {
-  animation: zoomIn 4s alternate;
+  animation: zoomIn 5s linear alternate;
 }
