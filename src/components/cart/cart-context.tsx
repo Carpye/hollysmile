@@ -1,103 +1,144 @@
 "use client"
-import { prisma } from "@/lib/prisma"
-import { createContext, useContext, useEffect, useState } from "react"
+import React, {
+  createContext,
+  useContext,
+  useReducer,
+  ReactNode,
+  useEffect,
+} from "react"
 
-type CartItem = {
-  id: string | number
-  name: string
-  price: number
-  stock: number
-  image: string | null
+// Define the structure of a cart item
+interface CartItem {
+  id: string
+  quantity: number
 }
 
-type CartContextType = {
-  cart: CartItem[]
-  removeCartItem: (id: string | number) => void
-  addCartItem: (id: number) => void
-  // Add other cart operations here, e.g., addCartItem, updatestock, etc.
+// Define the structure of the cart state
+interface CartState {
+  items: CartItem[]
 }
 
-const CartContext = createContext<CartContextType | undefined>(undefined)
+// Define the possible actions for the cart
+type CartAction =
+  | { type: "ADD_ITEM"; payload: CartItem }
+  | { type: "REMOVE_ITEM"; payload: string }
+  | { type: "UPDATE_QUANTITY"; payload: { id: string; quantity: number } }
+  | { type: "CLEAR_CART" }
+  | { type: "LOAD_CART"; payload: CartItem[] }
 
-const LOCAL_STORAGE_KEY = "shopping-cart"
+// Create the initial state
+const initialState: CartState = {
+  items: [],
+}
 
-export function CartProvider({ children }: { children: React.ReactNode }) {
-  const mockCart: CartItem[] = [
-    {
-      id: "1",
-      name: "Koszulka",
-      price: 50,
-      stock: 1,
-      image: "https://via.placeholder.com/150",
-    },
-    {
-      id: "2",
-      name: "Buty",
-      price: 150,
-      stock: 2,
-      image: "https://via.placeholder.com/150",
-    },
-    {
-      id: "3",
-      name: "Bluza",
-      price: 200,
-      stock: 1,
-      image: "https://via.placeholder.com/150",
-    },
-    {
-      id: "4",
-      name: "Spodnie",
-      price: 70,
-      stock: 1,
-      image: "https://via.placeholder.com/150",
-    },
-  ]
-  const [cart, setCart] = useState<CartItem[]>([])
+// Create the context
+const CartContext = createContext<
+  | {
+      state: CartState
+      dispatch: React.Dispatch<CartAction>
+    }
+  | undefined
+>(undefined)
 
-  const [isInitialized, setIsInitialized] = useState(false)
+// Create a cart reducer function
+function cartReducer(state: CartState, action: CartAction): CartState {
+  let newState: CartState
+  switch (action.type) {
+    case "ADD_ITEM": {
+      const existingItemIndex = state.items.findIndex(
+        (item) => item.id === action.payload.id
+      )
+      if (existingItemIndex > -1) {
+        const newItems = state.items.map((item, index) =>
+          index === existingItemIndex
+            ? { ...item, quantity: item.quantity + action.payload.quantity }
+            : item
+        )
+        newState = { ...state, items: newItems }
+      } else {
+        newState = { ...state, items: [...state.items, action.payload] }
+      }
+      break
+    }
+    case "REMOVE_ITEM": {
+      newState = {
+        ...state,
+        items: state.items.filter((item) => item.id !== action.payload),
+      }
+      break
+    }
+    case "UPDATE_QUANTITY": {
+      newState = {
+        ...state,
+        items: state.items.map((item) =>
+          item.id === action.payload.id
+            ? { ...item, quantity: action.payload.quantity }
+            : item
+        ),
+      }
+      break
+    }
+    case "CLEAR_CART":
+      newState = initialState
+      break
+    case "LOAD_CART":
+      newState = { ...state, items: action.payload }
+      break
+    default:
+      newState = state
+  }
+
+  // Save to local storage after each action
+  localStorage.setItem("cart", JSON.stringify(newState.items))
+  return newState
+}
+
+// Create a CartProvider component
+export function CartProvider({ children }: { children: ReactNode }) {
+  const [state, dispatch] = useReducer(cartReducer, initialState)
 
   useEffect(() => {
-    // Initialize cart from local storage
-    const storedCart = localStorage.getItem(LOCAL_STORAGE_KEY)
-    if (storedCart) {
-      setCart(JSON.parse(storedCart))
+    const savedCart = localStorage.getItem("cart")
+    if (savedCart) {
+      dispatch({ type: "LOAD_CART", payload: JSON.parse(savedCart) })
     }
-    setIsInitialized(true)
   }, [])
 
-  useEffect(() => {
-    // Update local storage whenever cart changes, but only after initialization
-    if (isInitialized) {
-      localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(cart))
-    }
-  }, [cart, isInitialized])
-
-  const removeCartItem = (id: string | number) => {
-    setCart((prevCart) => prevCart.filter((item) => item.id !== id))
-  }
-  const addCartItem = async (id: number) => {
-    const weirdItem: CartItem = {
-      id: id,
-      name: "Koszulka",
-      price: 50,
-      stock: 1,
-      image: "https://via.placeholder.com/150",
-    }
-    setCart((prevCart) => [...prevCart, weirdItem])
-  }
-
-  const value = {
-    cart,
-    removeCartItem,
-    addCartItem,
-  }
-  return <CartContext.Provider value={value}>{children}</CartContext.Provider>
+  return (
+    <CartContext.Provider value={{ state, dispatch }}>
+      {children}
+    </CartContext.Provider>
+  )
 }
 
+// Create a custom hook to use the cart context
 export function useCart() {
   const context = useContext(CartContext)
   if (context === undefined) {
     throw new Error("useCart must be used within a CartProvider")
   }
   return context
+}
+
+// Create utility functions for common cart operations
+export function useCartActions() {
+  const { dispatch } = useCart()
+
+  const addToCart = (id: string, quantity: number = 1) => {
+    dispatch({ type: "ADD_ITEM", payload: { id, quantity } })
+  }
+
+  const removeFromCart = (id: string) => {
+    dispatch({ type: "REMOVE_ITEM", payload: id })
+  }
+
+  const updateQuantity = (id: string, quantity: number) => {
+    dispatch({ type: "UPDATE_QUANTITY", payload: { id, quantity } })
+  }
+
+  const clearCart = () => {
+    dispatch({ type: "CLEAR_CART" })
+  }
+
+  return { addToCart, removeFromCart, updateQuantity, clearCart }
 }

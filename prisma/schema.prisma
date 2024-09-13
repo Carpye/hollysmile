@@ -12,12 +12,24 @@ datasource db {
 }
 
 model Product {
-  id          Int      @id @default(autoincrement())
+  id          String    @id @default(uuid())
   name        String
   description String?
   price       Float
   stock       Int
-  image       String?
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  mainImage   String?
+  images      String[]
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  variants    Variant[]
+}
+
+model Variant {
+  id        String  @id @default(uuid())
+  color     String
+  stock     Int
+  price     Float?
+  image     String?
+  productId String
+  product   Product @relation(fields: [productId], references: [id])
 }

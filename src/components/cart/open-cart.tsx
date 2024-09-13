@@ -1,5 +1,5 @@
 "use client"
-import React from "react"
+import React, { useEffect, useState } from "react"
 import {
   OpenSheet,
   Sheet,
@@ -12,12 +12,28 @@ import {
 } from "../ui/sheet"
 import { Button } from "../ui/button"
 import { ShoppingCart } from "lucide-react"
-import { useCart } from "./cart-context"
+import { useCart, useCartActions } from "./cart-context"
 import Image from "next/image"
 import Link from "next/link"
+import { getCartDetails } from "@/actions/cart"
 
 const CartButton = () => {
-  const { cart } = useCart()
+  const { state } = useCart()
+  const { removeFromCart, updateQuantity, clearCart } = useCartActions()
+  const [cartDetails, setCartDetails] = useState<any | null>(null)
+
+  useEffect(() => {
+    const fetchCartDetails = async () => {
+      if (state.items.length > 0) {
+        const details = await getCartDetails(state.items)
+        setCartDetails(details)
+      } else {
+        setCartDetails(null)
+      }
+    }
+
+    fetchCartDetails()
+  }, [state.items])
 
   return (
     <OpenSheet
@@ -33,22 +49,57 @@ const CartButton = () => {
       }
       header="Koszyk"
     >
-      {/* CART ITEMS */}
-      <div className="flex max-h-full flex-col gap-6">
-        {cart.length === 0 ? (
-          <p>Koszyk jest pusty</p>
+      <div className="">
+        <h2 className="mb-4 text-2xl font-bold">Shopping Cart</h2>
+        {!cartDetails ? (
+          <p>Your cart is empty.</p>
         ) : (
-          <div className="overflow-y-scroll">
-            {cart.map((item) => (
-              <CartItemCard
+          <>
+            {cartDetails.items.map((item) => (
+              <div
                 key={item.id}
-                name={item.name}
-                price={item.price}
-                stock={item.stock}
-                image={item.image ?? ""}
-              />
+                className="mb-4 flex items-center justify-between border-b pb-4"
+              >
+                <div>
+                  <h3 className="font-semibold">{item.name}</h3>
+                  <p className="text-gray-600">${item.price.toFixed(2)} each</p>
+                </div>
+                <div className="flex items-center">
+                  <button
+                    onClick={() =>
+                      updateQuantity(item.id, Math.max(1, item.quantity - 1))
+                    }
+                    className="rounded-l bg-gray-200 px-2 py-1"
+                  >
+                    -
+                  </button>
+                  <span className="bg-gray-100 px-4 py-1">{item.quantity}</span>
+                  <button
+                    onClick={() => updateQuantity(item.id, item.quantity + 1)}
+                    className="rounded-r bg-gray-200 px-2 py-1"
+                  >
+                    +
+                  </button>
+                  <button
+                    onClick={() => removeFromCart(item.id)}
+                    className="ml-2 text-red-500 hover:text-red-700"
+                  >
+                    Remove
+                  </button>
+                </div>
+              </div>
             ))}
-          </div>
+            <div className="mt-4 flex items-center justify-between">
+              <span className="font-bold">Total:</span>
+              <span className="font-bold">${cartDetails.total.toFixed(2)}</span>
+            </div>
+            <Button
+              onClick={clearCart}
+              className="mt-4 w-full bg-red-500 text-white hover:bg-red-600"
+            >
+              Clear Cart
+            </Button>
+          </>
         )}
       </div>
     </OpenSheet>
