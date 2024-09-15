@@ -1,6 +1,8 @@
 "use server"
 
+import { ICartItem } from "@/components/cart/cart-context"
 import { prisma } from "@/lib/prisma" // Assume this is your database connection
+import { Product, Variant } from "@prisma/client"
 
 export async function getProductDetails(id: string) {
   // In a real application, you would fetch this from your database
@@ -35,26 +37,26 @@ export async function getVariantDetails(id: string) {
 
   return product
 }
+export async function getCartDetails(cartItems: ICartItem[]): Promise<{
+  items: (Variant & { product: Product; quantity: number; total: number })[];
+  total: number;
+}> {
+  if (cartItems.length === 0) return { items: [], total: 0 }
 
-export async function getCartDetails(
-  cartItems: { id: string; quantity: number, variantId: string }[]
-) {
   const variantIds = cartItems.map((item) => item.variantId)
 
   // Fetch all products in one query
   const products = await prisma.variant.findMany({
-    include: {  product: true },
+    include: { product: true },
     where: { id: { in: variantIds } },
   })
 
-  console.log(products) ;
-  
+  console.log(products)
 
   // Create a map for easy lookup
   const productMap = new Map(products.map((p) => [p.id, p]))
 
-  console.log(productMap) ;
-  
+  console.log(productMap)
 
   // Calculate cart details
   const items = cartItems.map((item) => {
@@ -62,8 +64,10 @@ export async function getCartDetails(
     if (!product) throw new Error(`Product with id ${item.id} not found`)
     return {
       ...product,
-      quantity: item.quantity,  
-      total: product.price ? product.price * item.quantity : product.product.price * item.quantity,
+      quantity: item.quantity,
+      total: product.price
+        ? product.price * item.quantity
+        : product.product.price * item.quantity,
     }
   })
 

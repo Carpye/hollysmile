@@ -8,7 +8,7 @@ import React, {
 } from "react"
 
 // Define the structure of a cart item
-interface CartItem {
+export interface ICartItem {
   id: string
   quantity: number
   variantId: string
@@ -16,16 +16,16 @@ interface CartItem {
 
 // Define the structure of the cart state
 interface CartState {
-  items: CartItem[]
+  items: ICartItem[]
 }
 
 // Define the possible actions for the cart
 type CartAction =
-  | { type: "ADD_ITEM"; payload: CartItem }
+  | { type: "ADD_ITEM"; payload: ICartItem }
   | { type: "REMOVE_ITEM"; payload: string }
   | { type: "UPDATE_QUANTITY"; payload: { id: string; quantity: number } }
   | { type: "CLEAR_CART" }
-  | { type: "LOAD_CART"; payload: CartItem[] }
+  | { type: "LOAD_CART"; payload: ICartItem[] }
 
 // Create the initial state
 const initialState: CartState = {
@@ -82,7 +82,7 @@ function cartReducer(state: CartState, action: CartAction): CartState {
     case "REMOVE_ITEM": {
       newState = {
         ...state,
-        items: state.items.filter((item) => item.id !== action.payload),
+        items: state.items.filter((item) => item.variantId !== action.payload),
       }
       break
     }
@@ -90,7 +90,7 @@ function cartReducer(state: CartState, action: CartAction): CartState {
       newState = {
         ...state,
         items: state.items.map((item) =>
-          item.id === action.payload.id
+          item.variantId === action.payload.id
             ? { ...item, quantity: action.payload.quantity }
             : item
         ),
@@ -124,8 +124,7 @@ export function CartProvider({ children }: { children: ReactNode }) {
   }, [])
 
   useEffect(() => {
-    console.log(state.items);
-    
+    console.log(state.items)
   }, [state.items])
 
   return (
@@ -153,6 +152,8 @@ export function useCartActions() {
   }
 
   const removeFromCart = (id: string) => {
+    console.log(id)
+
     dispatch({ type: "REMOVE_ITEM", payload: id })
   }
 
