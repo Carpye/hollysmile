@@ -4,14 +4,14 @@ import React, { useState } from "react"
 import { useCartActions } from "./cart/cart-context"
 import { ChevronLeft, ChevronRight, ShoppingCart } from "lucide-react"
 import { Button } from "./ui/button"
-import { Prisma, Product } from "@prisma/client"
+import { Prisma, Product, Variant } from "@prisma/client"
 
 const ProductDetails = ({
   product,
 }: {
-  product: Product & { variants: { color: string }[]; images: string[] }
+  product: Product & { variants: Variant[]; images: string[] }
 }) => {
-  const [selectedColor, setSelectedColor] = useState(product.variants[0].color)
+  const [selectedVariant, setSelectedVariant] = useState<Variant>(product.variants[0])
   const [currentImageIndex, setCurrentImageIndex] = useState(0)
 
   const nextImage = () => {
@@ -82,9 +82,12 @@ const ProductDetails = ({
             {product.variants.map((variant) => (
               <button
                 key={variant.color}
-                onClick={() => setSelectedColor(variant.color)}
+                onClick={() => setSelectedVariant(variant)}
+                data-selected={variant.id === selectedVariant.id}
                 className={`h-8 w-8 rounded-full focus:outline-none focus:ring-2 focus:ring-[#7088ff] focus:ring-offset-2 ${
-                  selectedColor === variant.color ? "ring-2 ring-[#7088ff]" : ""
+                  variant.id === selectedVariant.id
+                    ? "ring-2 ring-[#7088ff]"
+                    : ""
                 }`}
                 style={{ backgroundColor: variant.color }}
                 aria-label={`Select ${variant.color} color`}
@@ -92,13 +95,13 @@ const ProductDetails = ({
             ))}
           </div>
           <p className="mt-2 text-sm text-gray-500">
-            Selected: {selectedColor}
+            Selected: {selectedVariant.name}
           </p>
         </div>
 
         <Button
           className="w-full rounded-md bg-[#7088ff] px-6 py-3 font-semibold text-white hover:bg-[#5a6cd9]"
-          onClick={() => addToCart(product.id)}
+          onClick={() => addToCart(product.id, selectedVariant.id)}
         >
           <ShoppingCart className="mr-2 h-5 w-5" />
           Add to Cart

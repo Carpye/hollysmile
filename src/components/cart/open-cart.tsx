@@ -61,8 +61,8 @@ const CartButton = () => {
                 className="mb-4 flex items-center justify-between border-b pb-4"
               >
                 <div>
-                  <h3 className="font-semibold">{item.name}</h3>
-                  <p className="text-gray-600">${item.price.toFixed(2)} each</p>
+                  <h3 className="font-semibold">{item.product.name}</h3>
+                  <p className="text-gray-600">${item.product.price.toFixed(2)} each</p>
                 </div>
                 <div className="flex items-center">
                   <button

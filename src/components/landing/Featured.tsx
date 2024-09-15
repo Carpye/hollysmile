@@ -48,7 +48,7 @@ export default async function Featured() {
           <ProductCard
             key={product.id}
             id={product.id}
-            image={product.image ?? ""}
+            image={product.mainImage ?? ""}
             name={product.name}
             price={product.price}
             stock={product.stock}

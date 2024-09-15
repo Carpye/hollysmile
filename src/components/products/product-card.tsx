@@ -22,7 +22,7 @@ export function ProductCard({
   description?: string
   variant?: "card" | "list"
 }) {
-  const { removeCartItem, addCartItem } = useCart()
+  // const { removeCartItem, addCartItem } = useCart()
 
   if (variant === "list")
     return (
@@ -37,7 +37,7 @@ export function ProductCard({
           <Button
             size={"icon"}
             variant={"destructive"}
-            onClick={() => removeCartItem(id)}
+            // onClick={() => removeCartItem(id)}
           >
             <Trash />
           </Button>
@@ -48,7 +48,7 @@ export function ProductCard({
   return (
     <Link
       href={`/produkty/${id}`}
-      className="relative flex w-full flex-col overflow-hidden rounded-xl border-2 border-primary"
+      className="relative flex w-full flex-col overflow-hidden rounded-xl border-2 border-primary max-w-md"
     >
       <div className="relative aspect-square w-full">
         <Image alt="Zdjęcie produktu" src={image} fill />

@@ -26,6 +26,7 @@ model Product {
 
 model Variant {
   id        String  @id @default(uuid())
+  name      String?
   color     String
   stock     Int
   price     Float?

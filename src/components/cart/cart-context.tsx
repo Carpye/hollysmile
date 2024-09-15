@@ -11,6 +11,7 @@ import React, {
 interface CartItem {
   id: string
   quantity: number
+  variantId: string
 }
 
 // Define the structure of the cart state
@@ -45,6 +46,24 @@ function cartReducer(state: CartState, action: CartAction): CartState {
   let newState: CartState
   switch (action.type) {
     case "ADD_ITEM": {
+      if (action.payload.variantId) {
+        const existingItemIndex = state.items.findIndex(
+          (item) => item.variantId === action.payload.variantId
+        )
+        if (existingItemIndex > -1) {
+          const newItems = state.items.map((item, index) =>
+            index === existingItemIndex
+              ? { ...item, quantity: item.quantity + action.payload.quantity }
+              : item
+          )
+          newState = { ...state, items: newItems }
+        } else {
+          newState = { ...state, items: [...state.items, action.payload] }
+        }
+
+        break
+      }
+
       const existingItemIndex = state.items.findIndex(
         (item) => item.id === action.payload.id
       )
@@ -104,6 +123,11 @@ export function CartProvider({ children }: { children: ReactNode }) {
     }
   }, [])
 
+  useEffect(() => {
+    console.log(state.items);
+    
+  }, [state.items])
+
   return (
     <CartContext.Provider value={{ state, dispatch }}>
       {children}
@@ -124,8 +148,8 @@ export function useCart() {
 export function useCartActions() {
   const { dispatch } = useCart()
 
-  const addToCart = (id: string, quantity: number = 1) => {
-    dispatch({ type: "ADD_ITEM", payload: { id, quantity } })
+  const addToCart = (id: string, variantId: string, quantity: number = 1) => {
+    dispatch({ type: "ADD_ITEM", payload: { id, quantity, variantId } })
   }
 
   const removeFromCart = (id: string) => {
