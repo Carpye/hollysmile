@@ -30,6 +30,7 @@ const ProductsInCart = () => {
     Produkty:
     {products?.items.map((item) => (
     <CartItem
+      key={item.id}
       item={item}
     />
     ))}

@@ -60,6 +60,7 @@ export default function Checkout() {
                 <ul className="divide-y divide-gray-200">
                   {cartDetails.items.map((item) => (
                    <CartItem
+                   key={item.id}
                    item={item}
                    />
                   ))}
