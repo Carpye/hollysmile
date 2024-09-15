@@ -2,9 +2,10 @@ import { ShoppingCart, Menu } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import Link from "next/link"
 import { prisma } from "@/lib/prisma"
+import { Product } from "@prisma/client"
 
 export default async function ProductsPage() {
-  const products = await prisma.product.findMany()
+  const products: Product[] = await prisma.product.findMany()
   return (
     <div className="flex min-h-screen flex-col bg-gray-100">
       <main className="container mx-auto flex-grow px-4 py-8">
@@ -20,7 +21,7 @@ export default async function ProductsPage() {
             >
               <div className="relative overflow-hidden">
                 <img
-                  src={product.image}
+                  src={product.mainImage ?? ""}
                   alt={product.name}
                   className="h-48 w-full transform object-cover transition duration-300 group-hover:scale-110"
                 />
