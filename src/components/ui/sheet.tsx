@@ -153,7 +153,7 @@ export const OpenSheet = ({
   return (
     <Sheet>
       <SheetTrigger asChild>{openTrigger}</SheetTrigger>
-      <SheetContent side={"right"}>
+      <SheetContent side={"right"} className="!max-w-[500px]">
         <SheetHeader>
           <SheetTitle>{header}</SheetTitle>
         </SheetHeader>

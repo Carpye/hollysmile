@@ -1,4 +1,9 @@
 import Image from "next/image"
+import { ChevronLeft, ChevronRight, ShoppingCart } from "lucide-react"
+import { Button } from "@/components/ui/button"
+import { useCart, useCartActions } from "@/components/cart/cart-context"
+import { getProductDetails } from "@/actions/cart"
+import ProductDetails from "@/components/ProductDetails"
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -7,18 +12,15 @@ import {
   BreadcrumbPage,
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb"
-import ProductDetails from "@/components/ProductDetails"
-import { prisma } from "@/lib/prisma"
-import { Product } from "@prisma/client"
 
-const Page = async ({ params }: { params: { productId: string } }) => {
-  const product: Product | null = await prisma.product.findUnique({
-    where: {
-      id: params.productId,
-    },
-  })
+export default async function ProductPage({
+  params: { productId },
+}: {
+  params: { productId: string }
+}) {
+  const product = await getProductDetails(productId)
 
-  if (!product) {
+    if (!product) {
     return <div>Product not found</div>
   }
 
@@ -43,5 +45,3 @@ const Page = async ({ params }: { params: { productId: string } }) => {
     </div>
   )
 }
-
-export default Page

@@ -1,5 +1,5 @@
 "use client"
-import React from "react"
+import React, { useEffect, useState } from "react"
 import {
   OpenSheet,
   Sheet,
@@ -11,13 +11,32 @@ import {
   SheetTrigger,
 } from "../ui/sheet"
 import { Button } from "../ui/button"
-import { ShoppingCart } from "lucide-react"
-import { useCart } from "./cart-context"
+import { ShoppingCart, Trash2 } from "lucide-react"
+import { useCart, useCartActions, ICartItem } from "./cart-context"
 import Image from "next/image"
 import Link from "next/link"
+import { getCartDetails } from "@/actions/cart"
+import { Product, Variant } from "@prisma/client"
+import { CartDetails } from "@/types"
+import CartItem from "./cart-item"
 
 const CartButton = () => {
-  const { cart } = useCart()
+  const { state } = useCart()
+  const { removeFromCart, updateQuantity, clearCart } = useCartActions()
+  const [cartDetails, setCartDetails] = useState<CartDetails | null>(null)
+
+  useEffect(() => {
+    const fetchCartDetails = async () => {
+      if (state.items.length > 0) {
+        const details = await getCartDetails(state.items)
+        setCartDetails(details)
+      } else {
+        setCartDetails(null)
+      }
+    }
+
+    fetchCartDetails()
+  }, [state.items])
 
   return (
     <OpenSheet
@@ -33,53 +52,31 @@ const CartButton = () => {
       }
       header="Koszyk"
     >
-      {/* CART ITEMS */}
-      <div className="flex max-h-full flex-col gap-6">
-        {cart.length === 0 ? (
-          <p>Koszyk jest pusty</p>
+      <div className="">
+        <h2 className="mb-4 text-2xl font-bold">Twój koszyk</h2>
+        {!cartDetails ? (
+          <p>Twój koszyk jest pusty.</p>
         ) : (
-          <div className="overflow-y-scroll">
-            {cart.map((item) => (
-              <CartItemCard
-                key={item.id}
-                name={item.name}
-                price={item.price}
-                stock={item.stock}
-                image={item.image ?? ""}
-              />
+          <>
+            {cartDetails.items.map((item) => (
+              <CartItem key={item.id} item={item} />
             ))}
-          </div>
+            <div className="mt-4 flex items-center justify-between">
+              <span className="font-bold">Razem:</span>
+              <span className="font-bold">{cartDetails.total.toFixed(2)} zł</span>
+            </div>
+            <Button
+              onClick={clearCart}
+              className="mt-4 w-full bg-red-500 text-white hover:bg-red-600"
+            >
+              Wyczyść koszyk
+            </Button>
+          </>
         )}
       </div>
     </OpenSheet>
   )
 }
 
-function CartItemCard({
-  name,
-  price,
-  stock,
-  image,
-}: {
-  name: string
-  price: number
-  stock: number
-  image: string
-}) {
-  return (
-    <div className="flex justify-between border">
-      <div>
-        <Image src={image} alt="Zdjęcie produktu" height={256} width={256} />
-      </div>
-      <div>
-        <p>{name}</p>
-        <p>{price}</p>
-      </div>
-      <div>
-        <p>{stock}</p>
-      </div>
-    </div>
-  )
-}
 
 export default CartButton
