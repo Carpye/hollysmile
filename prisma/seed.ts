@@ -7,7 +7,7 @@ async function main() {
     data: {
       name: "Koszulka",
       price: 50,
-      image: "https://via.placeholder.com/150",
+      mainImage: "https://via.placeholder.com/150",
       stock: 10,
       description: "Koszulka z nadrukiem",
     },
@@ -17,7 +17,7 @@ async function main() {
     data: {
       name: "Spodnie",
       price: 70,
-      image: "https://via.placeholder.com/150",
+      mainImage: "https://via.placeholder.com/150",
       stock: 5,
       description: "Spodnie dresowe",
     },
@@ -27,7 +27,7 @@ async function main() {
     data: {
       name: "Buty",
       price: 150,
-      image: "https://via.placeholder.com/150",
+      mainImage: "https://via.placeholder.com/150",
       stock: 3,
       description: "Buty sportowe",
     },
@@ -37,7 +37,7 @@ async function main() {
     data: {
       name: "Bluza",
       price: 200,
-      image: "https://via.placeholder.com/150",
+      mainImage: "https://via.placeholder.com/150",
       stock: 7,
       description: "Bluza z kapturem",
     },
