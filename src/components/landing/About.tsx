@@ -7,7 +7,7 @@ export default function About() {
   return (
     <div className="w-full items-center bg-primary/80 px-4 py-20">
       <div className="mx-auto flex h-full w-full max-w-screen-xl justify-between rounded-xl bg-white">
-        <div className="flex flex-col items-center justify-center gap-5 p-8 md:max-w-[300px] lg:max-w-[500px]">
+        <div className="flex flex-col items-center justify-center gap-5 p-8 pl-12 md:max-w-[300px] lg:max-w-[500px]">
           <div>
             <h6 className="text-center font-semibold text-primary md:text-left">
               Nadtytuł
@@ -25,7 +25,7 @@ export default function About() {
           </Button>
         </div>
         <div className="relative hidden max-w-[600px] flex-grow md:flex">
-          <Image alt="Grafika pokazowa" src={"/assets/tooth-image.svg"} fill />
+          <Image alt="Grafika pokazowa" src={"/assets/tooth-imageB.svg"} fill />
           <InfoBadge
             title="Białych uśmiechów"
             amount="1000"

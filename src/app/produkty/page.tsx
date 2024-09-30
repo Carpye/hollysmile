@@ -1,5 +1,3 @@
-import { ShoppingCart, Menu } from "lucide-react"
-import { Button } from "@/components/ui/button"
 import Link from "next/link"
 import { prisma } from "@/lib/prisma"
 import { Product } from "@prisma/client"
@@ -9,7 +7,7 @@ export default async function ProductsPage() {
   return (
     <div className="flex min-h-screen flex-col bg-gray-100">
       <main className="container mx-auto flex-grow px-4 py-8">
-        <h2 className="mb-6 text-3xl font-bold text-gray-800">
+        <h2 className="mb-8 text-3xl font-bold text-gray-800">
           Nasze produkty
         </h2>
         <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 md:grid-cols-3">
@@ -28,7 +26,7 @@ export default async function ProductsPage() {
                 <div className="absolute inset-0 bg-black bg-opacity-0 transition duration-300 group-hover:bg-opacity-20"></div>
               </div>
               <div className="p-4">
-                <h3 className="mb-2 text-xl font-semibold text-gray-800">
+                <h3 className="mb-1 text-xl font-semibold text-gray-800">
                   {product.name}
                 </h3>
                 <p className="mb-4 text-gray-600">
@@ -41,19 +39,13 @@ export default async function ProductsPage() {
                   className="w-full transform rounded bg-[#7088ff] px-4 py-2 text-center text-white transition duration-300 hover:bg-[#5a6cd9] group-hover:translate-y-1 group-hover:shadow-lg"
                   aria-hidden="true"
                 >
-                  View Details
+                  Zobacz Szczegóły
                 </div>
               </div>
             </Link>
           ))}
         </div>
       </main>
-
-      <footer className="bg-gray-800 py-4 text-white">
-        <div className="container mx-auto text-center">
-          <p>&copy; 2023 MyShop. All rights reserved.</p>
-        </div>
-      </footer>
     </div>
   )
 }

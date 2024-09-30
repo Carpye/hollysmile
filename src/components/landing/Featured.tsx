@@ -2,33 +2,6 @@ import { prisma } from "@/lib/prisma"
 import { ProductCard } from "../products/product-card"
 
 export default async function Featured() {
-  // const products = [
-  //   {
-  //     id: 1,
-  //     image: "next.svg",
-  //     name: "szczoteczka",
-  //     price: 99.99,
-  //     stock: 5,
-  //     description: "Opis szczoteczki",
-  //   },
-  //   {
-  //     id: 2,
-  //     image: "next.svg",
-  //     name: "szczoteczka 2",
-  //     price: 89.99,
-  //     stock: 3,
-  //     description: "Opis szczoteczki",
-  //   },
-  //   {
-  //     id: 3,
-  //     image: "next.svg",
-  //     name: "szczoteczka 3",
-  //     price: 79.99,
-  //     stock: 7,
-  //     description: "Opis szczoteczki",
-  //   },
-  // ]
-
   const products = await prisma.product.findMany({
     take: 3,
   })
@@ -43,7 +16,7 @@ export default async function Featured() {
           delikatne dla dziąseł i gwarantują zdrowy uśmiech każdego dnia.
         </p>
       </div>
-      <div className="relative flex w-full max-w-xs flex-col gap-8 px-4 md:max-w-screen-md md:flex-row 2xl:max-w-screen-xl">
+      <div className="relative flex w-full max-w-xs flex-col items-center justify-center gap-8 px-4 md:max-w-screen-md md:flex-row 2xl:max-w-screen-xl">
         {products.map((product) => (
           <ProductCard
             key={product.id}

@@ -1,8 +1,16 @@
-import { Menu, Search, ShoppingCart } from "lucide-react"
+import { Menu, Search } from "lucide-react"
 import Image from "next/image"
 import { Button } from "./ui/button"
 import CartButton from "./cart/open-cart"
 import Link from "next/link"
+import {
+  Sheet,
+  SheetClose,
+  SheetContent,
+  SheetDescription,
+  SheetHeader,
+  SheetTrigger,
+} from "@/components/ui/sheet"
 
 const Navbar = () => {
   return (
@@ -28,9 +36,30 @@ const Navbar = () => {
         <CartButton />
       </div>
       <div className="flex lg:hidden">
-        <Button variant={"ghost"} size={"icon"}>
-          <Menu className="h-6 w-6" />
-        </Button>
+        <Sheet>
+          <SheetTrigger asChild>
+            <Button variant={"ghost"} size={"icon"}>
+              <Menu className="h-6 w-6" />
+            </Button>
+          </SheetTrigger>
+          <SheetContent>
+            <SheetHeader className="mt-12">
+              <SheetDescription>
+                <ul className="absolute-center flex flex-col gap-8 text-xl text-black">
+                  <SheetClose asChild>
+                    <Link href={"/"}>Strona Główna</Link>
+                  </SheetClose>
+                  <SheetClose asChild>
+                    <Link href={"/produkty"}>Produkty</Link>
+                  </SheetClose>
+                  <SheetClose asChild>
+                    <Link href={"#about-us"}>O nas</Link>
+                  </SheetClose>
+                </ul>
+              </SheetDescription>
+            </SheetHeader>
+          </SheetContent>
+        </Sheet>
       </div>
     </div>
   )

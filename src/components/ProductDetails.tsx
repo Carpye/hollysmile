@@ -57,14 +57,14 @@ export default function ProductDetails({
         />
         <button
           onClick={prevImage}
-          className="absolute left-2 top-1/2 -translate-y-1/2 transform rounded-full bg-white p-2 shadow-md"
+          className="absolute left-4 top-1/2 -translate-y-1/2 transform rounded-full bg-white p-2 shadow-md"
           aria-label="Previous image"
         >
           <ChevronLeft className="h-6 w-6 text-gray-800" />
         </button>
         <button
           onClick={nextImage}
-          className="absolute right-2 top-1/2 -translate-y-1/2 transform rounded-full bg-white p-2 shadow-md"
+          className="absolute right-4 top-1/2 -translate-y-1/2 transform rounded-full bg-white p-2 shadow-md"
           aria-label="Next image"
         >
           <ChevronRight className="h-6 w-6 text-gray-800" />
@@ -89,18 +89,18 @@ export default function ProductDetails({
         </h1>
         <Separator className="" />
         <div className="flex flex-col items-start justify-around md:flex-row md:justify-start md:gap-8 lg:flex-col">
-          <div className="flex w-full flex-col items-start justify-start py-4 md:w-5/12 lg:w-full lg:flex-col lg:py-0">
-            <p className="pb-4 text-neutral-700 lg:py-4">
+          <div className="flex w-full max-w-full flex-col items-start justify-start truncate py-4 lg:w-full lg:flex-col lg:py-0">
+            <p className="text-wrap break-words pb-4 text-neutral-700 lg:py-4">
               {product.description}
             </p>
-            <span className="rounded-3xl bg-primary p-2 px-3 text-xl font-medium text-white">
-              ${product.price.toFixed(2)}
+            <span className="rounded-3xl p-2 px-0 text-3xl font-bold">
+              {product.price.toFixed(2)} zł
             </span>
             <div className="my-2 md:my-4">
               <h2 className="mb-2 text-lg font-semibold text-gray-900">
                 Kolor
               </h2>
-              <div className="flex space-x-2">
+              <div className="ml-1 flex space-x-2">
                 {product.variants.map((variant) => (
                   <button
                     key={variant.color}
@@ -120,21 +120,6 @@ export default function ProductDetails({
                 Wybrany kolor: {selectedVariant.name}
               </p>
             </div>
-          </div>
-
-          <div className="flex w-full flex-col items-start justify-start pb-6">
-            <h2 className="flex items-center justify-between py-2 text-2xl font-medium md:pt-4 lg:pt-2">
-              Szczegóły produktu
-            </h2>
-            <Separator />
-            <ul className="flex list-inside list-disc flex-col gap-4 pt-2">
-              <li>Czas pracy: Do 10 dni na jednym ładowaniu.</li>
-              <li>Wodoszczelność: IPX7 – odporna na działanie wody.</li>
-              <li>Trzy tryby czyszczenia: Codzienny, wrażliwy, Wybielanie</li>
-              <li>
-                Ekran LED: Wyraźny ekran z wskaźnikami trybu i poziomu baterii.
-              </li>
-            </ul>
           </div>
         </div>
         <div className="flex w-full flex-col-reverse items-center justify-center gap-4 p-4 sm:flex-row sm:justify-start sm:px-0">

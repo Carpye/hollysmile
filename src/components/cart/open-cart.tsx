@@ -50,7 +50,7 @@ const CartButton = () => {
           <ShoppingCart className="h-6 w-6" />
         </Button>
       }
-      header="Koszyk"
+      header=""
     >
       <div className="">
         <h2 className="mb-4 text-2xl font-bold">Twój koszyk</h2>
@@ -63,13 +63,15 @@ const CartButton = () => {
             ))}
             <div className="mt-4 flex items-center justify-between">
               <span className="font-bold">Razem:</span>
-              <span className="font-bold">{cartDetails.total.toFixed(2)} zł</span>
+              <span className="font-bold">
+                {cartDetails.total.toFixed(2)} zł
+              </span>
             </div>
             <Button
               onClick={clearCart}
               className="mt-4 w-full bg-red-500 text-white hover:bg-red-600"
             >
-              Wyczyść koszyk
+              Wyczyść cały koszyk
             </Button>
           </>
         )}
@@ -77,6 +79,5 @@ const CartButton = () => {
     </OpenSheet>
   )
 }
-
 
 export default CartButton

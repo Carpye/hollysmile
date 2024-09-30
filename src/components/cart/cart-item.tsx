@@ -20,8 +20,8 @@ export default function CartItem({
       key={item.id}
       className="mb-4 flex items-center justify-between gap-4 border-b pb-4"
     >
-      <div className="flex gap-4">
-        <div className="relative aspect-square w-[128px] overflow-hidden rounded-xl object-cover">
+      <div className="flex items-center gap-4">
+        <div className="relative aspect-square h-[128px] w-[128px] overflow-hidden rounded-xl object-cover">
           <Image
             alt="Zdjęcie produktu"
             src={item.product.mainImage ?? ""}
@@ -36,7 +36,9 @@ export default function CartItem({
             >
               {item.product.name}
             </Link>
-            <p className="flex items-center gap-2">Wariant: {item.name}</p>
+            <p className="flex items-center gap-2 text-gray-700">
+              Wariant: {item.name}
+            </p>
             <p className="text-gray-600">
               {item.product.price.toFixed(2)} zł / szt.
             </p>
@@ -68,18 +70,18 @@ function CartItemQuantitySelector({
   removeFromCart: (id: string) => void
 }) {
   return (
-    <div className="flex items-center">
+    <div className="mt-2 flex w-fit items-center rounded-lg border">
       <button
         onClick={() => updateQuantity(item.id, Math.max(1, item.quantity - 1))}
-        className="rounded-l bg-gray-200 px-2 py-1"
+        className="rounded-l px-3 py-1 text-2xl font-medium transition-all hover:bg-slate-100"
         disabled={item.quantity <= 1}
       >
         -
       </button>
-      <span className="bg-gray-100 px-4 py-1">{item.quantity}</span>
+      <span className="px-4 py-1">{item.quantity}</span>
       <button
         onClick={() => updateQuantity(item.id, item.quantity + 1)}
-        className="rounded-r bg-gray-200 px-2 py-1"
+        className="rounded-r px-3 py-1 text-2xl font-medium transition-all hover:bg-slate-100"
         disabled={item.quantity >= item.stock}
       >
         +
