@@ -41,7 +41,7 @@ const CartButton = () => {
   return (
     <OpenSheet
       closeTrigger={
-        <Button asChild className="w-full">
+        <Button asChild className="relative -bottom-10 w-full">
           <Link href={"/koszyk"}>Przejdź do koszyka</Link>
         </Button>
       }
@@ -69,13 +69,14 @@ const CartButton = () => {
             </div>
             <Button
               onClick={clearCart}
-              className="mt-4 w-full bg-red-500 text-white hover:bg-red-600"
+              className="mt-4 w-full border border-neutral-200 bg-neutral-100 text-black hover:border-none hover:bg-red-600 hover:text-white"
             >
               Wyczyść cały koszyk
             </Button>
           </>
         )}
       </div>
+      <SheetClose></SheetClose>
     </OpenSheet>
   )
 }

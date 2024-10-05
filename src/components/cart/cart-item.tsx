@@ -51,10 +51,10 @@ export default function CartItem({
         </div>
       </div>
       <button
-        className="flex !max-w-[40px] grow items-center justify-center rounded-xl bg-red-500/25 p-2"
+        className="flex !max-w-[40px] grow items-center justify-center rounded-xl bg-neutral-100 p-2 text-black transition-all hover:bg-red-500/25 hover:text-red-500"
         onClick={() => removeFromCart(item.id)}
       >
-        <Trash2 className="text-red-500" />
+        <Trash2 />
       </button>
     </div>
   )

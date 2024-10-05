@@ -27,7 +27,7 @@ const Hero = () => {
     }, 100)
   }, [])
   return (
-    <div className="relative h-screen max-h-[600px] w-full overflow-hidden">
+    <div className="relative h-[calc(100vh-128px)] w-full overflow-hidden">
       {images.map((image, index) => (
         <Image
           key={image}

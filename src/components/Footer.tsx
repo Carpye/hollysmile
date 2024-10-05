@@ -14,12 +14,12 @@ export default function Footer() {
             width={128}
             height={64}
           />
-          <p className="max-w-xs font-light text-slate-300">
+          <p className="max-w-64 font-light text-slate-300 lg:max-w-xs">
             Oferujemy innowacyjne szczoteczki do zębów, które dbają o zdrowie i
             piękny uśmiech każdego dnia.
           </p>
         </div>
-        <div className="flex flex-wrap gap-8 sm:gap-16">
+        <div className="flex gap-8 sm:gap-16 md:gap-12">
           <div className="flex flex-col gap-4 py-2">
             <h1 className="text-lg">Strona Główna</h1>
             <ul className="flex flex-col gap-4 text-base text-primary">

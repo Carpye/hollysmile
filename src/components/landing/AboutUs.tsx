@@ -4,11 +4,11 @@ export default function AboutUs() {
   return (
     <div
       // bg-[url('/assets/grid-background.png')]
-      className="w-full py-16"
+      className="w-full py-16 pb-32"
       id="about-us"
     >
       <h6 className="text-center text-primary">O nas</h6>
-      <h1 className="px-2 text-center font-Junge text-3xl font-medium md:text-5xl">
+      <h1 className="px-2 text-center font-Junge text-4xl font-medium md:text-6xl">
         Poznaj nas lepiej
       </h1>
       <div className="flex flex-col items-center justify-center gap-8 pt-16 lg:flex-row">
