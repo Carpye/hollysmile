@@ -34,6 +34,11 @@ export default function CartItem({ item }: { item: CartDetails["items"][number] 
               removeFromCart={removeFromCart}
             />
           </div>
+          <CartItemQuantitySelector
+            item={item}
+            updateQuantity={updateQuantity}
+            removeFromCart={removeFromCart}
+          />
         </div>
         <button
           className="flex !max-w-[40px] grow items-center justify-center rounded-xl bg-neutral-100 p-2 text-black transition-all hover:bg-red-500/25 hover:text-red-500"
@@ -71,7 +76,7 @@ export default function CartItem({ item }: { item: CartDetails["items"][number] 
         >
           +
         </button>
-      </div>
-    )
-  }
-  
+
+    </div>
+  )
+}

@@ -41,7 +41,7 @@ const CartButton = () => {
   return (
     <OpenSheet
       closeTrigger={
-        <Button asChild className="w-full">
+        <Button asChild className="relative -bottom-10 w-full">
           <Link href={"/koszyk"}>Przejdź do koszyka</Link>
         </Button>
       }
@@ -50,7 +50,7 @@ const CartButton = () => {
           <ShoppingCart className="h-6 w-6" />
         </Button>
       }
-      header="Koszyk"
+      header=""
     >
       <div className="">
         <h2 className="mb-4 text-2xl font-bold">Twój koszyk</h2>
@@ -63,20 +63,22 @@ const CartButton = () => {
             ))}
             <div className="mt-4 flex items-center justify-between">
               <span className="font-bold">Razem:</span>
-              <span className="font-bold">{cartDetails.total.toFixed(2)} zł</span>
+              <span className="font-bold">
+                {cartDetails.total.toFixed(2)} zł
+              </span>
             </div>
             <Button
               onClick={clearCart}
-              className="mt-4 w-full bg-red-500 text-white hover:bg-red-600"
+              className="mt-4 w-full border border-neutral-200 bg-neutral-100 text-black hover:border-none hover:bg-red-600 hover:text-white"
             >
-              Wyczyść koszyk
+              Wyczyść cały koszyk
             </Button>
           </>
         )}
       </div>
+      <SheetClose></SheetClose>
     </OpenSheet>
   )
 }
-
 
 export default CartButton
