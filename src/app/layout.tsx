@@ -18,13 +18,13 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <html lang="en" className="scroll-smooth">
+    <html lang="en" className="overflow-x-hidden scroll-smooth">
       <body className={inter.className}>
         <CartProvider>
           <div className="">
             <div className="min-h-screen">
-            <Navbar />
-            {children}
+              <Navbar />
+              {children}
             </div>
             <Footer />
           </div>

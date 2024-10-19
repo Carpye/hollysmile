@@ -48,22 +48,25 @@ export function ProductCard({
   return (
     <Link
       href={`/produkty/${id}`}
-      className="relative flex w-full max-w-md flex-col overflow-hidden rounded-xl border-2 border-primary sm:w-96"
+      className="relative flex w-full max-w-md flex-col overflow-hidden rounded-xl bg-background p-4 transition-all hover:scale-105 sm:w-96"
     >
       <div className="relative aspect-square h-full w-full object-cover sm:h-80">
         <Image
           alt="Zdjęcie produktu"
           src={image}
           fill
-          className="object-cover"
+          className="rounded-lg object-cover"
         />
       </div>
-      <div className="relative bottom-0 min-h-20 w-full bg-zinc-100 p-3 px-4">
-        <h3 className="text-2xl font-semibold">{name}</h3>
-        <p className="text-pretty text-base text-gray-600">{description}</p>
-        <div className="absolute -top-10 right-2 rounded-full bg-primary px-3 py-1 text-base font-medium text-white">
-          {price} zł
+      <div className="pt-2">
+        <div className="flex justify-between">
+          <h1 className="text-lg font-semibold text-primary">{name}</h1>
+          <span className="text-lg font-semibold text-accent-foreground">
+            {price} zł
+          </span>
         </div>
+
+        <p className="text-xs text-neutral-500">2 warianty</p>
       </div>
     </Link>
   )

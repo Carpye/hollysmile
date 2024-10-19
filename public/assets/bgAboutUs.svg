@@ -1,0 +1,35 @@
+<svg width="1440" height="861" viewBox="0 0 1440 861" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g clip-path="url(#clip0_296_417)">
+<rect width="1440" height="861" fill="#FFF1E6"/>
+<path d="M1080 0H1440V215.25L1080 0Z" stroke="#FCDDC5" stroke-width="2" stroke-linejoin="round"/>
+<path d="M1080 0V215.25L720 0H1080Z" stroke="#FCDDC5" stroke-width="2" stroke-linejoin="round"/>
+<path d="M900 322.875V215.25L1080 322.875H900Z" stroke="#FCDDC5" stroke-width="2" stroke-linejoin="round"/>
+<path d="M900 215.25H720L900 322.875V215.25Z" stroke="#FCDDC5" stroke-width="2" stroke-linejoin="round"/>
+<path d="M900 322.875L720 430.5V322.875H900Z" stroke="#FCDDC5" stroke-width="2" stroke-linejoin="round"/>
+<path d="M1080 322.875V430.5L900 322.875H1080Z" stroke="#FCDDC5" stroke-width="2" stroke-linejoin="round"/>
+<path d="M1440 430.5L1080 215.25V430.5H1440Z" stroke="#FCDDC5" stroke-width="2" stroke-linejoin="round"/>
+<path d="M720 107.625H540V0L720 107.625Z" stroke="#FCDDC5" stroke-width="2" stroke-linejoin="round"/>
+<path d="M540 107.625H360V0L540 107.625Z" stroke="#FCDDC5" stroke-width="2" stroke-linejoin="round"/>
+<path d="M540 215.25L360 107.625V215.25H540Z" stroke="#FCDDC5" stroke-width="2" stroke-linejoin="round"/>
+<path d="M720 107.625H540L720 215.25V107.625Z" stroke="#FCDDC5" stroke-width="2" stroke-linejoin="round"/>
+<path d="M360 0V215.25L0 0H360Z" stroke="#FCDDC5" stroke-width="2" stroke-linejoin="round"/>
+<path d="M360 430.5H0L360 215.25V430.5Z" stroke="#FCDDC5" stroke-width="2" stroke-linejoin="round"/>
+<path d="M720 215.25V430.5H360L720 215.25Z" stroke="#FCDDC5" stroke-width="2" stroke-linejoin="round"/>
+<path d="M720 538.125H540V430.5L720 538.125Z" stroke="#FCDDC5" stroke-width="2" stroke-linejoin="round"/>
+<path d="M360 430.5L540 538.125V430.5H360Z" stroke="#FCDDC5" stroke-width="2" stroke-linejoin="round"/>
+<path d="M540 645.75H360V538.125L540 645.75Z" stroke="#FCDDC5" stroke-width="2" stroke-linejoin="round"/>
+<path d="M540 538.125L720 645.75V538.125H540Z" stroke="#FCDDC5" stroke-width="2" stroke-linejoin="round"/>
+<path d="M360 645.75H0L360 430.5V645.75Z" stroke="#FCDDC5" stroke-width="2" stroke-linejoin="round"/>
+<path d="M360 645.75V861H0L360 645.75Z" stroke="#FCDDC5" stroke-width="2" stroke-linejoin="round"/>
+<path d="M720 861H360L720 645.75V861Z" stroke="#FCDDC5" stroke-width="2" stroke-linejoin="round"/>
+<path d="M1440 645.75V430.5L1080 645.75H1440Z" stroke="#FCDDC5" stroke-width="2" stroke-linejoin="round"/>
+<path d="M720 430.5H1080L720 645.75V430.5Z" stroke="#FCDDC5" stroke-width="2" stroke-linejoin="round"/>
+<path d="M1080 645.75L720 861V645.75H1080Z" stroke="#FCDDC5" stroke-width="2" stroke-linejoin="round"/>
+<path d="M1440 645.75H1080V861L1440 645.75Z" stroke="#FCDDC5" stroke-width="2" stroke-linejoin="round"/>
+</g>
+<defs>
+<clipPath id="clip0_296_417">
+<rect width="1440" height="861" fill="white"/>
+</clipPath>
+</defs>
+</svg>

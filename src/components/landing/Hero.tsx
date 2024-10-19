@@ -6,9 +6,10 @@ import { ChevronDown } from "lucide-react"
 import { cn } from "@/lib/utils"
 
 const images = [
-  "/assets/grid-background.png",
-  "/assets/polkadot-background.png",
-  "/temporarybg.svg",
+  "/assets/bg1.png",
+  "/assets/bg2.png",
+  "/assets/bg3.png",
+  "/assets/bg4.png",
 ]
 
 const Hero = () => {
@@ -41,19 +42,17 @@ const Hero = () => {
         />
       ))}
       <div className="absolute left-1/2 top-1/2 flex w-full -translate-x-1/2 -translate-y-1/2 transform flex-col items-center justify-end gap-8 px-2 sm:w-3/4 lg:w-1/2">
-        <h1 className="flex flex-col text-center text-4xl font-semibold sm:text-5xl xl:text-6xl">
-          Zadbaj o swój piękny <span className="text-primary">Uśmiech</span>
+        <div className="relative h-72 w-[588px]">
+          <Image
+            src={"/assets/logo-white.svg"}
+            fill
+            alt="heroImg"
+            className="drop-shadow-lg"
+          />
+        </div>
+        <h1 className="strong-shadow relative -top-16 text-4xl font-semibold text-white shadow-black drop-shadow-2xl">
+          Witamy w naszym sklepie
         </h1>
-        <p className="flex w-3/4 flex-col items-center justify-center text-center text-zinc-500">
-          Piękny uśmiech zaczyna się od najlepszych szczoteczek – odkryj naszą
-          wyjątkową ofertę w <span className="text-primary">Holly Smile!</span>
-        </p>
-      </div>
-      <div className="absolute bottom-2 left-1/2 flex -translate-x-1/2 transform flex-col items-center justify-center gap-4">
-        <Button className="shadow-xl" size={"lg"}>
-          Zobacz naszą ofertę!
-        </Button>
-        <ChevronDown className="z-50 h-12 w-12 animate-bounce text-neutral-700" />
       </div>
     </div>
   )

@@ -1,31 +1,21 @@
 "use client"
-import { Menu, Search, X } from "lucide-react"
+import { Menu } from "lucide-react"
 import Image from "next/image"
 import { Button } from "./ui/button"
 import CartButton from "./cart/open-cart"
 import Link from "next/link"
-import {
-  Sheet,
-  SheetClose,
-  SheetContent,
-  SheetDescription,
-  SheetHeader,
-  SheetTitle,
-  SheetTrigger,
-} from "@/components/ui/sheet"
+import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
 import { useState } from "react"
-
-import CartItem from "./cart/cart-item"
 import React from "react"
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false)
 
   return (
-    <div className="relative mx-auto flex h-[128px] max-w-screen-2xl items-center justify-between bg-white p-8">
+    <div className="relative z-50 mx-auto flex h-[128px] max-w-screen-2xl items-center justify-between border-b border-zinc-400 bg-neutral-900/10 p-8 text-white">
       <div className="logo">
         <Image
-          src={"/assets/logo-black.png"}
+          src={"/assets/logo-white.svg"}
           alt="Logo"
           width={128}
           height={64}

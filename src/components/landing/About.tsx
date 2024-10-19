@@ -3,79 +3,90 @@ import { Button } from "../ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { CircleCheckBig, Icon, Shield, Stars } from "lucide-react"
 import Link from "next/link"
+import Image from "next/image"
+import { Separator } from "../ui/separator"
 
 export default function About() {
   return (
-    <div className="flex w-full flex-col items-center bg-gradient-to-br from-indigo-300 to-primary py-16">
-      <h1 className="px-2 text-center text-5xl font-semibold text-white drop-shadow-lg md:text-6xl">
-        Dlaczego szczoteczki Holly Smile?
-      </h1>
-      <p className="px-4 py-4 text-center text-lg text-neutral-100 drop-shadow-md">
-        Innowacyjna technologia dla Twojego uśmiechu. Odkryj nowy wymiar higieny
-        jamy ustnej.
-      </p>
-      <div className="flex w-full flex-wrap justify-center gap-8 px-4 py-12">
-        <InfoCard
-          title="Skuteczne czyszczenie"
-          description="Zaawansowana technologia szczoteczek HollySmile zapewnia dokładne i
-          delikatne czyszczenie."
-          icon={<CircleCheckBig className="h-10 w-10 text-primary" />}
-        />
-        <InfoCard
-          title="Białszy Uśmiech"
-          description="Specjalna formuła włókien pomaga w naturalnym wybielaniu zębów, przywracając blask Twojemu uśmiechowi."
-          icon={<Stars className="h-10 w-10 text-primary" />}
-        />
-        <InfoCard
-          title="Ochrona Dziąseł"
-          description="Miękkie włosie i ergonomiczny kształt chronią Twoje dziąsła przed podrażnieniami."
-          icon={<Shield className="h-10 w-10 text-primary" />}
-        />
+    <div className="z-50 flex w-full flex-col items-center rounded-[60px] bg-[url('/assets/bgAboutUs.svg')] px-4 py-16 pb-12 md:items-end md:px-8 lg:px-24">
+      <div className="flex w-full flex-col">
+        <h3 className="text-center text-base text-secondary drop-shadow-md md:text-left">
+          Poznaj Holly Smile
+        </h3>
+        <h1 className="text-center text-5xl font-semibold text-primary drop-shadow-lg md:text-left">
+          Dlaczego Holly Smile?
+        </h1>
       </div>
-      <Button
-        size={"lg"}
-        variant={"secondary"}
-        className="rounded-xl text-lg text-primary shadow-lg transition-all hover:scale-110"
-        asChild
-      >
-        <Link href="/produkty">Zamów już teraz!</Link>
-      </Button>
-      <div className="relative flex w-full flex-wrap justify-center gap-12 pt-12 md:-left-2 lg:gap-48">
-        <InfoStat value={"95%"} title="Zadowolonych klientów" />
-        <InfoStat value={"1000%"} title="Białych uśmiechów dziennie" />
-        <InfoStat value={"50%"} title="Mniej płytki nazębnej" />
-      </div>
-    </div>
-  )
-}
-//Białych uśmiechów
-function InfoCard({
-  title,
-  description,
-  icon,
-  className,
-}: {
-  title: string
-  description: string
-  icon: any
-  className?: string
-}) {
-  return (
-    <Card className="w-96 border-2 border-neutral-200 bg-gradient-to-br from-white to-indigo-100 py-4">
-      <CardContent className="flex flex-col items-center justify-center p-4 text-center">
-        <div className="mb-6 flex justify-center">{icon}</div>
-        <h3 className="mb-2 text-2xl font-semibold">{title}</h3>
-        <p className="w-5/6 text-lg text-neutral-700">{description}</p>
-      </CardContent>
-    </Card>
-  )
-}
+      <div className="mt-12 grid gap-4 md:grid-cols-3 md:grid-rows-2">
+        <div className="flex items-center justify-center">
+          <p className="text-lg font-medium text-foreground md:text-base lg:text-lg">
+            <span className="font-semibold">Holly Smile </span> to połączenie
+            nowoczesnych technologii i dbałości o zdrowie jamy ustnej.
+            Wybierając nas, zyskujesz produkty, które są nie tylko skuteczne,
+            ale również przyjazne dla środowiska.
+          </p>
+        </div>
+        <div className="relative hidden md:row-span-2 md:block">
+          <Image
+            src={"/images/DSCF2532.jpg"}
+            fill
+            alt=""
+            className="rounded-xl object-cover shadow-xl"
+          />
+        </div>
+        <div className="relative h-56">
+          <Image
+            src={"/assets/bg1.png"}
+            fill
+            alt=""
+            className="rounded-xl object-cover shadow-xl"
+          />
+        </div>
 
-function InfoStat({ value, title }: { value: string; title: string }) {
-  return (
-    <div className="flex flex-col items-center justify-center gap-2 text-white drop-shadow-lg">
-      <span className="text-4xl font-bold">{value}</span>
-      <p className="text-center text-lg font-medium">{title}</p>
+        <div className="relative order-4 h-56 md:order-none">
+          <Image
+            src={"/assets/bg3.png"}
+            fill
+            alt=""
+            className="rounded-xl object-cover shadow-lg"
+          />
+        </div>
+        <div className="order-3 flex items-center justify-center md:order-none">
+          <p className="text-lg font-medium text-foreground md:text-base lg:text-lg">
+            Naszą misją jest dostarczanie najwyższej jakości rozwiązań, które
+            sprawiają, że codzienna pielęgnacja zębów staje się przyjemna i
+            efektywna. Zaufaj doświadczeniu, innowacjom i trosce, które
+            wyróżniają Holly Smile.
+          </p>
+        </div>
+      </div>
+      <div className="flex w-4/6 flex-col items-center justify-between gap-4 pt-12 md:flex-row md:items-start">
+        <div className="flex w-min flex-col items-center justify-center gap-2">
+          <span className="text-5xl font-semibold text-accent-foreground">
+            3000
+          </span>
+          <p className="text-center text-2xl font-semibold">
+            Uśmiechniętych klientów
+          </p>
+        </div>
+        <div className="flex w-min flex-col items-center justify-center gap-2">
+          <span className="text-5xl font-semibold text-accent-foreground">
+            95%
+          </span>
+          <p className="text-center text-2xl font-semibold">
+            Pozytywnych opini
+          </p>
+        </div>
+        <div className="flex w-min flex-col items-center justify-center gap-2">
+          <span className="text-5xl font-semibold text-accent-foreground">
+            10x
+          </span>
+          <p className="text-center text-2xl font-semibold">
+            Większa skuteczność
+          </p>
+        </div>
+      </div>
+      <Separator className="mt-4 w-full rounded-full bg-[#9D8189] py-[2px] md:w-4/6" />
     </div>
   )
 }

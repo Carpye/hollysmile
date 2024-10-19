@@ -3,29 +3,39 @@ import Image from "next/image"
 export default function AboutUs() {
   return (
     <div
-      // bg-[url('/assets/grid-background.png')]
-      className="w-full py-16 pb-32"
+      className="w-full bg-[url('/assets/bgAboutUs.svg')] px-24 py-16 pb-32"
       id="about-us"
     >
-      <h6 className="text-center text-primary">O nas</h6>
-      <h1 className="px-2 text-center font-Junge text-4xl font-medium md:text-6xl">
-        Poznaj nas lepiej
-      </h1>
-      <div className="flex flex-col items-center justify-center gap-8 pt-16 lg:flex-row">
+      <div className="grid grid-cols-5 grid-rows-2 gap-8">
+        <div className="col-span-2 flex flex-col justify-center">
+          <h3 className="text-base text-secondary drop-shadow-md">
+            Poznaj nas
+          </h3>
+          <h1 className="text-8xl font-semibold text-primary drop-shadow-lg">
+            Kto za
+            <br /> tym stoi?
+          </h1>
+        </div>
         <Person
-          description=" Test Test to niezwykle utalentowana i zaangażowana pracownica,
-            której profesjonalizm i pozytywne podejście wyróżniają ją w każdej
-            roli."
-          image="/men.svg"
-          name="Test Test"
+          name="Jane Doe"
+          role="Dyrektor Generalny (CEO)"
+          image="/assets/Jane.png"
+          description="„Jestem stomatologiem z ponad 10-letnim doświadczeniem i zawsze chciałam, aby zdrowa pielęgnacja jamy ustnej była dostępna dla każdego. Holly Smile to moja odpowiedź na potrzebę połączenia nowoczesnych technologii z ekologią. “"
         />
         <Person
-          description=" Test Test to niezwykle utalentowana i zaangażowana pracownica,
-            której profesjonalizm i pozytywne podejście wyróżniają ją w każdej
-            roli."
-          image="/men.svg"
-          name="Test Test"
+          name="John Doe"
+          role="Dyrektor ds. Produktu (Chief Product Officer)"
+          image="/assets/Joe.png"
+          description="„Jestem stomatologiem z ponad 10-letnim doświadczeniem i zawsze chciałam, aby zdrowa pielęgnacja jamy ustnej była dostępna dla każdego. Holly Smile to moja odpowiedź na potrzebę połączenia nowoczesnych technologii z ekologią. “"
         />
+        <div className="relative col-span-2 h-80">
+          <Image
+            src={"/assets/bg1.png"}
+            fill
+            alt=""
+            className="rounded-2xl object-cover"
+          />
+        </div>
       </div>
     </div>
   )
@@ -35,22 +45,23 @@ function Person({
   name,
   description,
   image,
+  role,
 }: {
   name: string
   description: string
   image: string
+  role: string
 }) {
   return (
-    <div className="flex flex-col items-center last:pb-16 lg:pb-16">
-      <div className="relative aspect-square w-48 md:w-64 xl:w-96">
-        <Image src={image} alt={name} fill />
-        <div className="text-md absolute bottom-3 left-1/2 -translate-x-1/2 transform text-nowrap rounded-xl bg-primary p-1 px-6 text-center font-medium text-white shadow-xl md:rounded-2xl md:text-lg lg:text-xl xl:text-2xl">
-          {name}
-        </div>
+    <div className="col-span-3 flex gap-4 rounded-3xl bg-[#9D8189] p-4">
+      <div className="relative h-full w-56 min-w-56">
+        <Image src={image} fill alt="" className="rounded-2xl object-cover" />
       </div>
-      <p className="max-w-md px-8 text-center text-sm font-medium md:text-base">
-        {description}
-      </p>
+      <div className="h-full">
+        <h1 className="text-4xl font-semibold text-background">{name}</h1>
+        <h3 className="text-base text-background/60">{role}</h3>
+        <p className="mt-2 text-lg text-white">{description}</p>
+      </div>
     </div>
   )
 }
