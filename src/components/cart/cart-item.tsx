@@ -36,10 +36,10 @@ export default function CartItem({ item }: { item: CartDetails["items"][number] 
           </div>
         </div>
         <button
-          className="flex grow items-center justify-center rounded-xl bg-red-500/25 p-2 !max-w-[40px]"
+          className="flex !max-w-[40px] grow items-center justify-center rounded-xl bg-neutral-100 p-2 text-black transition-all hover:bg-red-500/25 hover:text-red-500"
           onClick={() => removeFromCart(item.id)}
         >
-          <Trash2 className="text-red-500" />
+          <Trash2 />
         </button>
       </div>
     )
