@@ -8,9 +8,6 @@ import { CartDetails } from "@/types"
 
 export default function CartItem({ item }: { item: CartDetails["items"][number] }) {
     const { removeFromCart, updateQuantity } = useCartActions()
-
-    console.log("test");
-    
   
     return (
       <div

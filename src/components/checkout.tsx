@@ -1,31 +1,29 @@
 "use client"
-import { useEffect, useState } from "react"
-import { useCart } from "./cart/cart-context"
 import { getCartDetails } from "@/actions/cart"
 import { CartDetails } from "@/types"
-import Image from "next/image"
-import { Label } from "./ui/label"
-import { Input } from "./ui/input"
+import { loadStripe } from "@stripe/stripe-js"
+import { useEffect, useState } from "react"
+import { SubmitHandler, useForm } from "react-hook-form"
+import { useCart } from "./cart/cart-context"
 import CartItem from "./cart/cart-item"
 import { Button } from "./ui/button"
-import { useForm, SubmitHandler } from "react-hook-form"
-import { Router } from "next/router"
-import { useRouter } from "next/navigation"
-interface ShippingFormInputs {
-  name: string
+import { Input } from "./ui/input"
+import { Label } from "./ui/label"
+
+export interface ShippingFormInputs {
   email: string
-  address: string
   city: string
-  postalCode: string
-  country: string
+  inPostCode: string
+  phoneNumber: string
 }
+
+// Załaduj Stripe poza komponentem, aby uniknąć wielokrotnego ładowania
+const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLIC_KEY!)
 
 export default function Checkout() {
   const { state } = useCart()
   const [cartDetails, setCartDetails] = useState<CartDetails | null>(null)
   const [isLoading, setIsLoading] = useState(true)
-
-  const router = useRouter()
 
   const {
     register,
@@ -34,16 +32,16 @@ export default function Checkout() {
   } = useForm<ShippingFormInputs>()
 
   const onSubmit: SubmitHandler<ShippingFormInputs> = async (data) => {
-    console.log(data)
-
-    const res = await fetch("/api/lemonsqueezy", {
+    const res = await fetch("/api/create-payment-intent", {
       method: "POST",
       body: JSON.stringify({
         shippingInfo: { ...data },
         items: state.items.map((item) => ({
-          productId: item.id,
+          variantId: item.variantId,
+          productId: item.productId,
           quantity: item.quantity,
         })),
+        total: cartDetails?.total,
       }),
       headers: {
         "Content-Type": "application/json",
@@ -52,13 +50,28 @@ export default function Checkout() {
 
     const resData = await res.json()
 
-    console.log(resData)
+    const { sessionId } = resData
 
-    if (resData.url) {
-      router.push(resData.url)
-    } else {
-      console.error("Error creating checkout")
+    const stripe = await stripePromise
+    if (!stripe) {
+      throw new Error("Stripe failed to load")
     }
+
+    // Przekierowanie do Checkout
+    const { error } = await stripe.redirectToCheckout({
+      sessionId,
+    })
+
+    if (error) {
+      console.error("Error:", error)
+      alert("An error occurred. Please try again.")
+    }
+
+    // if (resData.url) {
+    //   router.push(resData.url)
+    // } else {
+    //   console.error("Error creating checkout")
+    // }
 
     // Here you would typically send this data to your server
   }
@@ -72,6 +85,7 @@ export default function Checkout() {
       setIsLoading(false)
     }
     fetchCartDetails()
+    
   }, [state.items])
 
   if (isLoading) {
@@ -105,15 +119,15 @@ export default function Checkout() {
               </ul>
               <div className="px-4 py-4 sm:px-6">
                 <div className="flex justify-between text-lg font-medium">
-                  <p>Total</p>
-                  <p>${cartDetails.total.toFixed(2)}</p>
+                  <p>Razem</p>
+                  <p>{cartDetails.total.toFixed(2)}zł</p>
                 </div>
               </div>
             </div>
           </div>
           <div>
             <h2 className="mb-6 text-2xl font-bold text-gray-900">
-              Shipping Information
+              Informacje do dostawy
             </h2>
             <form
               onSubmit={handleSubmit(onSubmit)}
@@ -121,30 +135,16 @@ export default function Checkout() {
             >
               <div className="grid grid-cols-1 gap-6">
                 <div>
-                  <Label htmlFor="name">Full Name</Label>
-                  <Input
-                    autoComplete="name"
-                    type="text"
-                    id="name"
-                    {...register("name", { required: "Name is required" })}
-                  />
-                  {errors.name && (
-                    <p className="mt-1 text-sm text-red-600">
-                      {errors.name.message}
-                    </p>
-                  )}
-                </div>
-                <div>
-                  <Label htmlFor="email">Email Address</Label>
+                  <Label htmlFor="email">Adres e-mail</Label>
                   <Input
                     type="email"
                     id="email"
                     autoComplete="email"
                     {...register("email", {
-                      required: "Email is required",
+                      required: "Adres e-mail jest wymagany",
                       pattern: {
-                        value: /\S+@\S+\.\S+/,
-                        message: "Entered value does not match email format",
+                        value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
+                        message: "Nieprawidłowy format adresu e-mail",
                       },
                     })}
                   />
@@ -155,82 +155,62 @@ export default function Checkout() {
                   )}
                 </div>
                 <div>
-                  <Label htmlFor="address">Street Address</Label>
+                  <Label htmlFor="phoneNumber">Numer telefonu</Label>
                   <Input
-                    autoComplete="address"
-                    type="text"
-                    id="address"
-                    {...register("address", {
-                      required: "Address is required",
+                    type="tel"
+                    id="phoneNumber"
+                    autoComplete="tel"
+                    {...register("phoneNumber", {
+                      required: "Numer telefonu jest wymagany",
+                      pattern: {
+                        value: /^\+?[0-9]{9,15}$/,
+                        message: "Nieprawidłowy format numeru telefonu",
+                      },
                     })}
                   />
-                  {errors.address && (
+                  {errors.phoneNumber && (
                     <p className="mt-1 text-sm text-red-600">
-                      {errors.address.message}
+                      {errors.phoneNumber.message}
                     </p>
                   )}
                 </div>
-                <div className="grid grid-cols-2 gap-4">
-                  <div>
-                    <Label htmlFor="city">City</Label>
-                    <Input
-                      // autoComplete="city"
-                      type="text"
-                      id="city"
-                      {...register("city", { required: "City is required" })}
-                    />
-                    {errors.city && (
-                      <p className="mt-1 text-sm text-red-600">
-                        {errors.city.message}
-                      </p>
-                    )}
-                  </div>
-                  <div>
-                    <Label htmlFor="postalCode">Postal Code</Label>
-                    <Input
-                      autoComplete="postal-code"
-                      type="text"
-                      id="postalCode"
-                      {...register("postalCode", {
-                        required: "Postal code is required",
-                      })}
-                    />
-                    {errors.postalCode && (
-                      <p className="mt-1 text-sm text-red-600">
-                        {errors.postalCode.message}
-                      </p>
-                    )}
-                  </div>
+                <div>
+                  <Label htmlFor="city">Miasto</Label>
+                  <Input
+                    type="text"
+                    id="city"
+                    {...register("city", { required: "Miasto jest wymagane" })}
+                  />
+                  {errors.city && (
+                    <p className="mt-1 text-sm text-red-600">
+                      {errors.city.message}
+                    </p>
+                  )}
                 </div>
                 <div>
-                  <Label htmlFor="country">Country</Label>
+                  <Label htmlFor="inPostCode">Kod paczkomatu InPost</Label>
                   <Input
-                    autoComplete="country"
                     type="text"
-                    id="country"
-                    {...register("country", {
-                      required: "Country is required",
+                    id="inPostCode"
+                    {...register("inPostCode", {
+                      required: "Kod paczkomatu jest wymagany",
+                      pattern: {
+                        value: /^[A-Z]{3}\d{2}[A-Z0-9]{1,3}$/,
+                        message: "Niepoprawny format kodu paczkomatu",
+                      },
                     })}
                   />
-                  {errors.country && (
+                  {errors.inPostCode && (
                     <p className="mt-1 text-sm text-red-600">
-                      {errors.country.message}
+                      {errors.inPostCode.message}
                     </p>
                   )}
                 </div>
               </div>
               <Button type="submit" className="mt-6 w-full">
-                Continue to Payment
+                Przejdź do płatności
               </Button>
             </form>
-            <h2 className="mb-6 mt-10 text-2xl font-bold text-gray-900">
-              Payment
-            </h2>
-            {/* <div className="bg-white shadow overflow-hidden sm:rounded-lg p-6">
-                <Stripe>
-                  <StripeCheckoutForm />
-                </Stripe>
-              </div> */}
           </div>
         </div>
       </div>
