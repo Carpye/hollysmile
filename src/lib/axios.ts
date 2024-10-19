@@ -1,12 +1,12 @@
-import axios from "axios";
+import axios from "axios"
 
-export const LEMON_SQUEEZY_ENDPOINT = "https://api.lemonsqueezy.com/v1/";
+export const STRIPE_ENDPOINT = "https://api.stripe.com/"
 
-export const lemonSqueezyApiInstance = axios.create({
-  baseURL: LEMON_SQUEEZY_ENDPOINT,
+export const stripeApi = axios.create({
+  baseURL: STRIPE_ENDPOINT,
   headers: {
     Accept: "application/vnd.api+json",
     "Content-Type": "application/vnd.api+json",
-    Authorization: `Bearer ${process.env.LEMON_SQUEEZY_API_KEY}`,
+    Authorization: `Bearer ${process.env.STRIPE_API_KEY}`,
   },
-});
+})

@@ -51,12 +51,8 @@ export async function getCartDetails(cartItems: ICartItem[]): Promise<{
     where: { id: { in: variantIds } },
   })
 
-  console.log(products)
-
   // Create a map for easy lookup
   const productMap = new Map(products.map((p) => [p.id, p]))
-
-  console.log(productMap)
 
   // Calculate cart details
   const items = cartItems.map((item) => {

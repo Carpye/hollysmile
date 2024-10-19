@@ -9,7 +9,7 @@ import React, {
 
 // Define the structure of a cart item
 export interface ICartItem {
-  id: string
+  productId: string
   quantity: number
   variantId: string
 }
@@ -23,7 +23,7 @@ interface CartState {
 type CartAction =
   | { type: "ADD_ITEM"; payload: ICartItem }
   | { type: "REMOVE_ITEM"; payload: string }
-  | { type: "UPDATE_QUANTITY"; payload: { id: string; quantity: number } }
+  | { type: "UPDATE_QUANTITY"; payload: { variantId: string; quantity: number } }
   | { type: "CLEAR_CART" }
   | { type: "LOAD_CART"; payload: ICartItem[] }
 
@@ -65,7 +65,7 @@ function cartReducer(state: CartState, action: CartAction): CartState {
       }
 
       const existingItemIndex = state.items.findIndex(
-        (item) => item.id === action.payload.id
+        (item) => item.variantId === action.payload.variantId
       )
       if (existingItemIndex > -1) {
         const newItems = state.items.map((item, index) =>
@@ -90,7 +90,7 @@ function cartReducer(state: CartState, action: CartAction): CartState {
       newState = {
         ...state,
         items: state.items.map((item) =>
-          item.variantId === action.payload.id
+          item.variantId === action.payload.variantId
             ? { ...item, quantity: action.payload.quantity }
             : item
         ),
@@ -119,7 +119,44 @@ export function CartProvider({ children }: { children: ReactNode }) {
   useEffect(() => {
     const savedCart = localStorage.getItem("cart")
     if (savedCart) {
-      dispatch({ type: "LOAD_CART", payload: JSON.parse(savedCart) })
+      try {
+        const parsedCart = JSON.parse(savedCart);
+        if (!Array.isArray(parsedCart)) {
+          throw new Error("Nieprawidłowy format koszyka");
+        }
+
+        if (parsedCart.length === 0) {
+          console.log("Koszyk jest pusty");
+          dispatch({ type: "CLEAR_CART" });
+          return;
+        }
+
+        for (const item of parsedCart) {
+          if (
+            typeof item !== "object" ||
+            !item.hasOwnProperty("productId") ||
+            !item.hasOwnProperty("variantId") ||
+            !item.hasOwnProperty("quantity") ||
+            typeof item.productId !== "string" ||
+            typeof item.variantId !== "string" ||
+            typeof item.quantity !== "number"
+          ) {
+            throw new Error("Nieprawidłowa struktura elementu koszyka");
+          }
+          
+          if (item.quantity <= 0) {
+            console.log("Opróżnianie koszyka");
+            throw new Error("Nieprawidłowa ilość w koszyku");
+          }
+        }
+        
+        console.log("Koszyk jest prawidłowy, ładowanie koszyka");
+        dispatch({ type: "LOAD_CART", payload: parsedCart });
+      } catch (error) {
+        console.error("Błąd podczas ładowania koszyka:", error);
+        localStorage.removeItem("cart");
+        dispatch({ type: "CLEAR_CART" });
+      }
     }
   }, [])
 
@@ -147,18 +184,18 @@ export function useCart() {
 export function useCartActions() {
   const { dispatch } = useCart()
 
-  const addToCart = (id: string, variantId: string, quantity: number = 1) => {
-    dispatch({ type: "ADD_ITEM", payload: { id, quantity, variantId } })
+  const addToCart = (productId: string, variantId: string, quantity: number = 1) => {
+    dispatch({ type: "ADD_ITEM", payload: { productId, quantity, variantId } })
   }
 
-  const removeFromCart = (id: string) => {
-    console.log(id)
+  const removeFromCart = (variantId: string) => {
+    console.log(variantId)
 
-    dispatch({ type: "REMOVE_ITEM", payload: id })
+    dispatch({ type: "REMOVE_ITEM", payload: variantId })
   }
 
-  const updateQuantity = (id: string, quantity: number) => {
-    dispatch({ type: "UPDATE_QUANTITY", payload: { id, quantity } })
+  const updateQuantity = (variantId: string, quantity: number) => {
+    dispatch({ type: "UPDATE_QUANTITY", payload: { variantId, quantity } })
   }
 
   const clearCart = () => {
