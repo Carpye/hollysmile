@@ -9,16 +9,16 @@ export default async function Featured() {
   const repeatedProducts = Array(6).fill(products).flat().slice(0, 6)
 
   return (
-    <div className="bg-background-secondary flex w-full flex-col items-center justify-center gap-8 rounded-[60px] py-8">
+    <div className="flex w-full flex-col items-center justify-center gap-8 rounded-[60px] bg-[url('/assets/bgFeatured.svg')] bg-cover py-8">
       <div className="flex w-full flex-col items-center justify-center gap-2">
         <h3 className="text-base font-semibold text-primary drop-shadow-lg">
           Nasze produkty
         </h3>
-        <h1 className="text-5xl font-semibold text-white drop-shadow-xl">
+        <h1 className="text-center text-5xl font-semibold text-white drop-shadow-xl">
           Wybrane dla ciebie
         </h1>
       </div>
-      <div className="grid-row-2 grid grid-cols-3 gap-6">
+      <div className="md:grid-row-2 grid grid-cols-1 gap-6 px-4 sm:grid-cols-2 lg:grid-cols-3">
         {repeatedProducts.map((product: any, index: any) => (
           <ProductCard
             key={index}

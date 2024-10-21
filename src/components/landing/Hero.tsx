@@ -28,7 +28,8 @@ const Hero = () => {
     }, 100)
   }, [])
   return (
-    <div className="relative h-[calc(100vh-128px)] w-full overflow-hidden">
+    //h-[calc(100vh-128px)]
+    <div className="absolute top-0 h-screen w-full overflow-hidden">
       {images.map((image, index) => (
         <Image
           key={image}
@@ -42,7 +43,7 @@ const Hero = () => {
         />
       ))}
       <div className="absolute left-1/2 top-1/2 flex w-full -translate-x-1/2 -translate-y-1/2 transform flex-col items-center justify-end gap-8 px-2 sm:w-3/4 lg:w-1/2">
-        <div className="relative h-72 w-[588px]">
+        <div className="relative h-72 w-64 md:w-[588px]">
           <Image
             src={"/assets/logo-white.svg"}
             fill

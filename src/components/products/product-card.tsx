@@ -48,7 +48,7 @@ export function ProductCard({
   return (
     <Link
       href={`/produkty/${id}`}
-      className="relative flex w-full max-w-md flex-col overflow-hidden rounded-xl bg-background p-4 transition-all hover:scale-105 sm:w-96"
+      className="lg:96 relative flex w-full max-w-md flex-col overflow-hidden rounded-xl bg-background p-4 transition-all hover:scale-105 sm:w-80"
     >
       <div className="relative aspect-square h-full w-full object-cover sm:h-80">
         <Image

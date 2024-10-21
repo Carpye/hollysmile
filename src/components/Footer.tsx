@@ -17,7 +17,7 @@ export default function Footer() {
             piękny uśmiech każdego dnia.
           </p>
         </div>
-        <div className="flex gap-8 sm:gap-16 md:gap-12">
+        <div className="flex flex-wrap gap-8 sm:gap-16 md:gap-12">
           <div className="flex flex-col gap-4 py-2">
             <h1 className="text-lg text-background">Strona Główna</h1>
             <ul className="flex flex-col gap-4 text-base text-[#9D8189]">

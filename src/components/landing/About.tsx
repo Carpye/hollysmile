@@ -8,7 +8,7 @@ import { Separator } from "../ui/separator"
 
 export default function About() {
   return (
-    <div className="z-50 flex w-full flex-col items-center rounded-[60px] bg-[url('/assets/bgAboutUs.svg')] px-4 py-16 pb-12 md:items-end md:px-8 lg:px-24">
+    <div className="z-50 mt-[50vh] flex w-full flex-col items-center rounded-[60px] bg-[url('/assets/bgAboutUs.svg')] px-4 py-16 pb-12 md:items-end md:px-8 lg:px-24">
       <div className="flex w-full flex-col">
         <h3 className="text-center text-base text-secondary drop-shadow-md md:text-left">
           Poznaj Holly Smile
@@ -60,7 +60,7 @@ export default function About() {
           </p>
         </div>
       </div>
-      <div className="flex w-4/6 flex-col items-center justify-between gap-4 pt-12 md:flex-row md:items-start">
+      <div className="flex w-5/6 flex-col items-center justify-between gap-4 pt-12 md:flex-row md:items-start lg:w-4/6">
         <div className="flex w-min flex-col items-center justify-center gap-2">
           <span className="text-5xl font-semibold text-accent-foreground">
             3000
@@ -86,7 +86,7 @@ export default function About() {
           </p>
         </div>
       </div>
-      <Separator className="mt-4 w-full rounded-full bg-[#9D8189] py-[2px] md:w-4/6" />
+      <Separator className="mt-4 w-full rounded-full bg-[#9D8189] py-[2px] md:w-5/6 lg:w-4/6" />
     </div>
   )
 }
