@@ -12,7 +12,7 @@ const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false)
 
   return (
-    <div className="relative z-50 mx-auto flex h-[128px] max-w-screen-2xl items-center justify-between border-b border-zinc-400 bg-neutral-900/10 p-8 text-white">
+    <div className="relative z-10 mx-auto flex h-[128px] max-w-screen-2xl items-center justify-between p-8 text-white">
       <div className="logo">
         <Image
           src={"/assets/logo-white.svg"}

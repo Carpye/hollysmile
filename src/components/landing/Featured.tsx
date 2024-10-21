@@ -9,7 +9,7 @@ export default async function Featured() {
   const repeatedProducts = Array(6).fill(products).flat().slice(0, 6)
 
   return (
-    <div className="bg-background-secondary flex w-full flex-col items-center justify-center gap-8 rounded-[60px] py-8">
+    <div className="flex w-full flex-col items-center justify-center gap-8 rounded-[60px] py-8">
       <div className="flex w-full flex-col items-center justify-center gap-2">
         <h3 className="text-base font-semibold text-primary drop-shadow-lg">
           Nasze produkty

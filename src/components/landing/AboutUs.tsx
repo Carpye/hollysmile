@@ -2,10 +2,7 @@ import Image from "next/image"
 
 export default function AboutUs() {
   return (
-    <div
-      className="w-full bg-[url('/assets/bgAboutUs.svg')] px-24 py-16 pb-32"
-      id="about-us"
-    >
+    <div className="w-full px-24 py-16 pb-32" id="about-us">
       <div className="grid grid-cols-5 grid-rows-2 gap-8">
         <div className="col-span-2 flex flex-col justify-center">
           <h3 className="text-base text-secondary drop-shadow-md">
