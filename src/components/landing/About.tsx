@@ -8,7 +8,8 @@ import { Separator } from "../ui/separator"
 
 export default function About() {
   return (
-    <div className="z-50 mt-[50vh] flex w-full flex-col items-center rounded-[60px] bg-[url('/assets/bgAboutUs.svg')] px-4 py-16 pb-12 md:items-end md:px-8 lg:px-24">
+    //
+    <div className="relative z-30 flex w-full flex-col items-center rounded-t-[60px] bg-[url('/assets/bgAboutUs.svg')] px-4 py-16 pb-12 md:items-end md:px-8 lg:px-24">
       <div className="flex w-full flex-col">
         <h3 className="text-center text-base text-secondary drop-shadow-md md:text-left">
           Poznaj Holly Smile

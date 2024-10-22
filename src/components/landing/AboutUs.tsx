@@ -3,7 +3,7 @@ import Image from "next/image"
 export default function AboutUs() {
   return (
     <div
-      className="w-full bg-[url('/assets/bgAboutUs.svg')] px-2 py-16 pb-32 md:px-8 lg:px-24"
+      className="z-50 w-full bg-[url('/assets/bgAboutUs.svg')] px-2 py-16 pb-32 md:px-8 lg:px-24"
       id="about-us"
     >
       <div className="grid gap-8 md:grid-cols-5 md:grid-rows-2">
@@ -59,7 +59,7 @@ function Person({
 }) {
   return (
     <div className="flex h-full flex-col gap-4 rounded-3xl bg-[#9D8189] p-4 drop-shadow-xl md:flex-row">
-      <div className="relative h-64 w-full min-w-56 md:h-full md:w-56">
+      <div className="relative h-64 w-full min-w-56 sm:h-96 md:h-full md:w-56">
         <Image src={image} fill alt="" className="rounded-2xl object-cover" />
       </div>
       <div className="h-full">

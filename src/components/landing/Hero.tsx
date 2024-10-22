@@ -29,7 +29,7 @@ const Hero = () => {
   }, [])
   return (
     //h-[calc(100vh-128px)]
-    <div className="absolute top-0 h-screen w-full overflow-hidden">
+    <div className="absolute top-0 z-10 h-[140vh] min-h-screen w-full overflow-hidden md:h-[130vh] lg:h-[140vh]">
       {images.map((image, index) => (
         <Image
           key={image}
@@ -37,12 +37,12 @@ const Hero = () => {
           alt={`Slide ${index}`}
           fill
           className={cn(
-            "slide object-cover",
+            "slide z-10 object-cover",
             currentSlide == index ? "active" : ""
           )}
         />
       ))}
-      <div className="absolute left-1/2 top-1/2 flex w-full -translate-x-1/2 -translate-y-1/2 transform flex-col items-center justify-end gap-8 px-2 sm:w-3/4 lg:w-1/2">
+      <div className="absolute left-1/2 top-[40%] z-10 flex w-full -translate-x-1/2 -translate-y-1/2 transform flex-col items-center justify-end gap-8 px-2 sm:w-3/4 lg:w-1/2">
         <div className="relative h-72 w-64 md:w-[588px]">
           <Image
             src={"/assets/logo-white.svg"}

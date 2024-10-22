@@ -75,7 +75,7 @@ export default function ProductDetails({
               key={index}
               onClick={() => setCurrentImageIndex(index)}
               className={`mx-1 h-3 w-3 rounded-full ${
-                index === currentImageIndex ? "bg-[#7088ff]" : "bg-gray-300"
+                index === currentImageIndex ? "bg-black" : "bg-gray-300"
               }`}
               aria-label={`View image ${index + 1}`}
             />
@@ -106,9 +106,9 @@ export default function ProductDetails({
                     key={variant.color}
                     onClick={() => setSelectedVariant(variant)}
                     data-selected={variant.id === selectedVariant.id}
-                    className={`h-8 w-8 rounded-full focus:outline-none focus:ring-2 focus:ring-[#7088ff] focus:ring-offset-2 ${
+                    className={`h-8 w-8 rounded-full focus:outline-none focus:ring-2 focus:ring-black focus:ring-offset-2 ${
                       variant.id === selectedVariant.id
-                        ? "ring-2 ring-[#7088ff]"
+                        ? "ring-2 ring-black"
                         : ""
                     }`}
                     style={{ backgroundColor: variant.color }}
@@ -122,46 +122,49 @@ export default function ProductDetails({
             </div>
           </div>
         </div>
-        <div className="flex w-full flex-col-reverse items-center justify-center gap-4 p-4 sm:flex-row sm:justify-start sm:px-0">
+        <div className="flex w-full flex-col-reverse items-end justify-center gap-4 p-4 sm:flex-row sm:justify-start sm:px-0">
+          <div className="">
+            <h1 className="mb-2 text-xl font-semibold">Ilość:</h1>
+            <div className="xs:w-[340px] flex w-full items-center justify-between rounded-xl border sm:w-auto">
+              <Button
+                variant="ghost"
+                size="icon"
+                className="h-12 w-12 rounded-xl hover:text-black"
+                onClick={decrementQuantity}
+                disabled={quantity <= 1}
+              >
+                <MinusIcon className="h-4 w-4" />
+              </Button>
+              <Input
+                type="number"
+                min="1"
+                max="99"
+                className="w-14 rounded-none border-0 bg-white text-center text-xl font-medium [appearance:textfield] [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
+                value={quantity}
+                onChange={(e) =>
+                  setQuantity(
+                    Math.max(1, Math.min(99, parseInt(e.target.value) || 1))
+                  )
+                }
+              />
+              <Button
+                variant="ghost"
+                size="icon"
+                className="h-12 w-12 rounded-xl hover:text-black"
+                onClick={incrementQuantity}
+                disabled={quantity >= 99}
+              >
+                <PlusIcon className="h-4 w-4" />
+              </Button>
+            </div>
+          </div>
+
           <Button
             className="xs:w-[340px] w-full gap-2 rounded-xl px-4 py-6 text-xl shadow-xl sm:w-auto"
             onClick={() => addToCart(product.id, selectedVariant.id)}
           >
             <ShoppingBasket /> Dodaj do koszyka
           </Button>
-
-          <div className="xs:w-[340px] flex w-full items-center justify-between rounded-xl border sm:w-auto">
-            <Button
-              variant="ghost"
-              size="icon"
-              className="h-12 w-12 rounded-xl"
-              onClick={decrementQuantity}
-              disabled={quantity <= 1}
-            >
-              <MinusIcon className="h-4 w-4" />
-            </Button>
-            <Input
-              type="number"
-              min="1"
-              max="99"
-              className="w-14 rounded-none border-0 text-center text-xl font-medium [appearance:textfield] [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
-              value={quantity}
-              onChange={(e) =>
-                setQuantity(
-                  Math.max(1, Math.min(99, parseInt(e.target.value) || 1))
-                )
-              }
-            />
-            <Button
-              variant="ghost"
-              size="icon"
-              className="h-12 w-12 rounded-xl"
-              onClick={incrementQuantity}
-              disabled={quantity >= 99}
-            >
-              <PlusIcon className="h-4 w-4" />
-            </Button>
-          </div>
         </div>
       </div>
     </div>

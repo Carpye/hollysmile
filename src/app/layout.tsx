@@ -22,7 +22,7 @@ export default function RootLayout({
       <body className={inter.className}>
         <CartProvider>
           <div className="">
-            <div className="min-h-screen">
+            <div className="">
               <Navbar />
               {children}
             </div>
