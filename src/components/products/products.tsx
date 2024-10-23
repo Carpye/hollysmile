@@ -15,7 +15,6 @@ const Products = ({ products }: { products: Product[] }) => {
           image={product.mainImage ?? ""}
           id={product.id}
           stock={1}
-          variant="card"
         />
       ))}
     </div>

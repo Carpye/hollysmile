@@ -1,5 +1,5 @@
 "use client"
-import { useEffect, useState } from "react"
+import { useEffect, useState, useRef } from "react"
 import { Button } from "./ui/button"
 import { Separator } from "./ui/separator"
 import { useCartActions } from "./cart/cart-context"
@@ -13,6 +13,7 @@ import {
 import { Input } from "./ui/input"
 import { Product, Variant } from "@prisma/client"
 import Image from "next/image"
+import { motion, AnimatePresence } from "framer-motion"
 
 export default function ProductDetails({
   product,
@@ -20,6 +21,12 @@ export default function ProductDetails({
   product: Product & { variants: Variant[]; images: string[] }
 }) {
   const [quantity, setQuantity] = useState(1)
+  const [slideDirection, setSlideDirection] = useState<"left" | "right">(
+    "right"
+  )
+  const [currentImageIndex, setCurrentImageIndex] = useState(0)
+  const carouselRef = useRef<HTMLDivElement>(null)
+  const [dragConstraints, setDragConstraints] = useState({ right: 0, left: 0 })
 
   const incrementQuantity = () => setQuantity((prev) => Math.min(prev + 1, 99))
   const decrementQuantity = () => setQuantity((prev) => Math.max(prev - 1, 1))
@@ -29,60 +36,167 @@ export default function ProductDetails({
   const [selectedVariant, setSelectedVariant] = useState<Variant>(
     product.variants[0]
   )
-  const [currentImageIndex, setCurrentImageIndex] = useState(0)
+
+  useEffect(() => {
+    if (carouselRef.current) {
+      const scrollWidth = carouselRef.current.scrollWidth
+      const clientWidth = carouselRef.current.clientWidth
+      setDragConstraints({ right: 0, left: -(scrollWidth - clientWidth) })
+    }
+  }, [])
+
+  const changeImage = (newIndex: number, direction: "left" | "right") => {
+    if (currentImageIndex === newIndex) return
+    setSlideDirection(direction)
+    setCurrentImageIndex(newIndex)
+  }
 
   const nextImage = () => {
-    setCurrentImageIndex((prevIndex) =>
-      prevIndex === product.images.length - 1 ? 0 : prevIndex + 1
-    )
+    const newIndex =
+      currentImageIndex === product.images.length - 1
+        ? 0
+        : currentImageIndex + 1
+    changeImage(newIndex, "right")
   }
 
   const prevImage = () => {
-    setCurrentImageIndex((prevIndex) =>
-      prevIndex === 0 ? product.images.length - 1 : prevIndex - 1
-    )
+    const newIndex =
+      currentImageIndex === 0
+        ? product.images.length - 1
+        : currentImageIndex - 1
+    changeImage(newIndex, "left")
   }
-  useEffect(() => {
-    console.log(product.images[currentImageIndex])
-  }, [currentImageIndex, product.images])
+
+  const slideVariants = {
+    enter: (direction: string) => ({
+      x: direction === "right" ? 1000 : -1000,
+      opacity: 0,
+    }),
+    center: {
+      zIndex: 1,
+      x: 0,
+      opacity: 1,
+    },
+    exit: (direction: string) => ({
+      zIndex: 0,
+      x: direction === "right" ? -1000 : 1000,
+      opacity: 0,
+    }),
+  }
 
   return (
     <div className="flex w-full flex-col items-start justify-around md:items-center lg:flex-row lg:items-start lg:justify-center lg:gap-16">
-      <div className="relative aspect-square h-3/4 w-full sm:h-[464px] md:h-3/4 lg:h-full">
-        <Image
-          src={product.images[currentImageIndex] ?? "/placeholder.svg"}
-          fill
-          alt={`${product.name} - Image ${currentImageIndex + 1}`}
-          className="rounded-xl object-cover"
-        />
-        <button
-          onClick={prevImage}
-          className="absolute left-4 top-1/2 -translate-y-1/2 transform rounded-full bg-white p-2 shadow-md"
-          aria-label="Previous image"
+      <div className="w-full lg:max-w-2xl">
+        <div className="relative aspect-square w-full overflow-hidden rounded-xl">
+          <AnimatePresence initial={false} custom={slideDirection}>
+            <motion.div
+              key={currentImageIndex}
+              custom={slideDirection}
+              variants={slideVariants}
+              initial="enter"
+              animate="center"
+              exit="exit"
+              transition={{
+                x: { type: "spring", stiffness: 300, damping: 30 },
+                opacity: { duration: 0.2 },
+              }}
+              className="absolute h-full w-full"
+            >
+              <Image
+                src={product.images[currentImageIndex] ?? "/placeholder.svg"}
+                fill
+                priority
+                quality={90}
+                alt={`${product.name} - Image ${currentImageIndex + 1}`}
+                className="object-cover"
+              />
+            </motion.div>
+          </AnimatePresence>
+
+          {/* Navigation Buttons - Now with higher z-index */}
+          <div className="absolute inset-0 z-10 flex items-center justify-between px-4">
+            <motion.button
+              whileHover={{ scale: 1.1 }}
+              whileTap={{ scale: 0.9 }}
+              onClick={prevImage}
+              className="rounded-full bg-white p-2 shadow-md"
+              aria-label="Previous image"
+            >
+              <ChevronLeft className="h-6 w-6 text-gray-800" />
+            </motion.button>
+            <motion.button
+              whileHover={{ scale: 1.1 }}
+              whileTap={{ scale: 0.9 }}
+              onClick={nextImage}
+              className="rounded-full bg-white p-2 shadow-md"
+              aria-label="Next image"
+            >
+              <ChevronRight className="h-6 w-6 text-gray-800" />
+            </motion.button>
+          </div>
+        </div>
+
+        {/* Thumbnail Slider */}
+        <motion.div
+          ref={carouselRef}
+          className="mt-4 flex gap-2 overflow-hidden pb-2"
         >
-          <ChevronLeft className="h-6 w-6 text-gray-800" />
-        </button>
-        <button
-          onClick={nextImage}
-          className="absolute right-4 top-1/2 -translate-y-1/2 transform rounded-full bg-white p-2 shadow-md"
-          aria-label="Next image"
-        >
-          <ChevronRight className="h-6 w-6 text-gray-800" />
-        </button>
-        <div className="mt-4 flex justify-center">
+          <motion.div
+            drag="x"
+            dragConstraints={dragConstraints}
+            className="flex gap-2"
+          >
+            {product.images.map((image, index) => (
+              <motion.button
+                key={index}
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                onClick={() => {
+                  const direction = index > currentImageIndex ? "right" : "left"
+                  changeImage(index, direction)
+                }}
+                className={`relative h-20 w-20 flex-shrink-0 overflow-hidden rounded-lg border-2 transition-all ${
+                  index === currentImageIndex
+                    ? "border-accebg- opacity-100"
+                    : "border-transparent opacity-60 hover:opacity-100"
+                }`}
+              >
+                <Image
+                  src={image}
+                  fill
+                  sizes="80px"
+                  alt={`Thumbnail ${index + 1}`}
+                  className="object-cover"
+                  quality={60}
+                />
+              </motion.button>
+            ))}
+          </motion.div>
+        </motion.div>
+
+        {/* Dots indicator */}
+        <div className="mt-4 flex justify-center gap-2">
           {product.images.map((_, index) => (
-            <button
+            <motion.button
               key={index}
-              onClick={() => setCurrentImageIndex(index)}
-              className={`mx-1 h-3 w-3 rounded-full ${
-                index === currentImageIndex ? "bg-[#7088ff]" : "bg-gray-300"
+              whileHover={{ scale: 1.2 }}
+              whileTap={{ scale: 0.8 }}
+              onClick={() => {
+                const direction = index > currentImageIndex ? "right" : "left"
+                changeImage(index, direction)
+              }}
+              className={`h-2 rounded-full transition-all ${
+                index === currentImageIndex
+                  ? "w-4 bg-[#9D8189]"
+                  : "w-2 bg-gray-300"
               }`}
-              aria-label={`View image ${index + 1}`}
+              aria-label={`Go to image ${index + 1}`}
             />
           ))}
         </div>
       </div>
 
+      {/* Rest of the component remains the same */}
       <div className="flex w-full flex-col items-start justify-start">
         <h1 className="w-full py-4 text-2xl font-semibold sm:text-3xl md:text-4xl lg:pt-0">
           {product.name}
@@ -102,13 +216,15 @@ export default function ProductDetails({
               </h2>
               <div className="ml-1 flex space-x-2">
                 {product.variants.map((variant) => (
-                  <button
+                  <motion.button
                     key={variant.color}
+                    whileHover={{ scale: 1.1 }}
+                    whileTap={{ scale: 0.9 }}
                     onClick={() => setSelectedVariant(variant)}
                     data-selected={variant.id === selectedVariant.id}
-                    className={`h-8 w-8 rounded-full focus:outline-none focus:ring-2 focus:ring-[#7088ff] focus:ring-offset-2 ${
+                    className={`h-8 w-8 rounded-full focus:outline-none focus:ring-2 focus:ring-[#9D8189] focus:ring-offset-2 ${
                       variant.id === selectedVariant.id
-                        ? "ring-2 ring-[#7088ff]"
+                        ? "ring-2 ring-[#9D8189]"
                         : ""
                     }`}
                     style={{ backgroundColor: variant.color }}
@@ -123,12 +239,14 @@ export default function ProductDetails({
           </div>
         </div>
         <div className="flex w-full flex-col-reverse items-center justify-center gap-4 p-4 sm:flex-row sm:justify-start sm:px-0">
-          <Button
-            className="xs:w-[340px] w-full gap-2 rounded-xl px-4 py-6 text-xl shadow-xl sm:w-auto"
+          <motion.button
+            whileHover={{ scale: 1.02 }}
+            whileTap={{ scale: 0.98 }}
+            className="xs:w-[340px] flex w-full items-center justify-center gap-2 rounded-xl bg-[#9D8189] px-4 py-6 text-xl text-white shadow-xl sm:w-auto"
             onClick={() => addToCart(product.id, selectedVariant.id)}
           >
             <ShoppingBasket /> Dodaj do koszyka
-          </Button>
+          </motion.button>
 
           <div className="xs:w-[340px] flex w-full items-center justify-between rounded-xl border sm:w-auto">
             <Button

@@ -20,12 +20,12 @@ export default async function ProductPage({
 }) {
   const product = await getProductDetails(productId)
 
-    if (!product) {
+  if (!product) {
     return <div>Product not found</div>
   }
 
   return (
-    <div className="flex h-full w-full flex-col items-center gap-8 p-8 md:p-16">
+    <div className="flex h-full min-h-[calc(100vh-128px)] w-full flex-col items-center gap-8 p-8 md:p-16">
       <div className="flex h-full w-full max-w-7xl flex-col gap-4">
         <Breadcrumb className="">
           <BreadcrumbList>

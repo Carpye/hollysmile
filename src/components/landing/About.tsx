@@ -15,7 +15,7 @@ export default function About() {
           </h1>
         </div>
 
-        <div className="sm:col-span-2"></div>
+        <div className="hidden sm:col-span-2 sm:block"></div>
 
         {/* First Text Block */}
         <div className="flex items-center justify-center rounded-2xl bg-background p-3 sm:rounded-3xl sm:p-4">
@@ -73,7 +73,7 @@ export default function About() {
           </p>
         </div>
 
-        <div className="col-span-1"></div>
+        <div className="col-span-1 hidden sm:block"></div>
 
         {/* Stats Block */}
         <div className="col-span-1 flex h-fit flex-col items-center justify-between gap-4 self-start rounded-2xl bg-background px-4 py-6 sm:col-span-2 sm:rounded-3xl sm:px-12 sm:pb-8 sm:pt-12 md:flex-row md:items-start">

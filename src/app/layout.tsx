@@ -22,7 +22,6 @@ export default function RootLayout({
       <body className={inter.className}>
         <CartProvider>
           <div className="relative">
-            <Navbar />
             {children}
             <Footer />
           </div>
