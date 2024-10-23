@@ -38,8 +38,8 @@ export async function getVariantDetails(id: string) {
   return product
 }
 export async function getCartDetails(cartItems: ICartItem[]): Promise<{
-  items: (Variant & { product: Product; quantity: number; total: number })[];
-  total: number;
+  items: (Variant & { product: Product; quantity: number; total: number })[]
+  total: number
 }> {
   if (cartItems.length === 0) return { items: [], total: 0 }
 
@@ -57,7 +57,7 @@ export async function getCartDetails(cartItems: ICartItem[]): Promise<{
   // Calculate cart details
   const items = cartItems.map((item) => {
     const product = productMap.get(item.variantId)
-    if (!product) throw new Error(`Product with id ${item.id} not found`)
+    if (!product) throw new Error(`Variant with id ${item.variantId} not found`)
     return {
       ...product,
       quantity: item.quantity,
