@@ -9,7 +9,6 @@ import {
 } from "@/components/email-template"
 import { ShippingFormInputs } from "@/components/checkout"
 import { prisma } from "@/lib/prisma"
-import { buffer } from "stream/consumers"
 
 const webhookSecret = process.env.STRIPE_WEBHOOK_SECRET!
 const resend = new Resend(process.env.RESEND_API_KEY!)
@@ -17,13 +16,8 @@ const resend = new Resend(process.env.RESEND_API_KEY!)
 export async function POST(request: NextRequest) {
   console.log("Received webhook request")
 
-  // Read the raw request body
-  // ! This is a temporary workaround
-  // @ts-ignore
-  const rawBody = await buffer(request.body!)
-  console.log("rawBody: ", rawBody)
+  const body = await request.text()
 
-  const body = rawBody.toString()
   console.log("body: ", body)
 
   const signature = headers().get("stripe-signature")!
