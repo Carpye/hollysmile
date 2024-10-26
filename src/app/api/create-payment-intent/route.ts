@@ -6,8 +6,14 @@ import { Product, Variant } from "@prisma/client"
 import { ICartItem } from "@/components/cart/cart-context"
 
 export async function POST(request: NextRequest) {
+  console.log("Received create-payment-intent request")
+
   try {
-    const { total, shippingInfo, items } = await request.json() as { total: number, shippingInfo: ShippingFormInputs, items: { variantId: string, quantity: number, productId: string }[] }
+    const { total, shippingInfo, items } = (await request.json()) as {
+      total: number
+      shippingInfo: ShippingFormInputs
+      items: { variantId: string; quantity: number; productId: string }[]
+    }
 
     const variants = await prisma.variant.findMany({
       where: {
@@ -16,17 +22,18 @@ export async function POST(request: NextRequest) {
         },
       },
       include: {
-        product: true
-      }
+        product: true,
+      },
     })
 
-
-
-    console.log(items);
-    console.log(variants);
+    console.log(items)
+    console.log(variants)
 
     if (variants.length !== items.length) {
-      return NextResponse.json({ message: "Nie udało się utworzyć sesji płatności" }, { status: 500 })
+      return NextResponse.json(
+        { message: "Nie udało się utworzyć sesji płatności" },
+        { status: 500 }
+      )
     }
 
     // Tworzenie sesji płatności Stripe
@@ -41,7 +48,7 @@ export async function POST(request: NextRequest) {
 
       //       },
       //       unit_amount: Number(price) * 100, // kwota w groszach
-            
+
       //     },
       //     quantity: items[0].quantity,
       //     adjustable_quantity: {
@@ -50,34 +57,35 @@ export async function POST(request: NextRequest) {
       //       maximum: 10,
       //     },
       //   },
-        
+
       // ],
       line_items: items.map((item) => {
         const variantMatch = findVariantMatch(variants, item)
         return {
-        price_data: {
-          currency: "pln",
-          product_data: {
-            name: variantMatch?.name ?? variantMatch!.product.name,
-            metadata: {
-              variantId: variantMatch.id
+          price_data: {
+            currency: "pln",
+            product_data: {
+              name: variantMatch?.name ?? variantMatch!.product.name,
+              metadata: {
+                variantId: variantMatch.id,
+              },
             },
+            unit_amount: variantMatch!.product.price * 100, // kwota w groszach
           },
-          unit_amount: variantMatch!.product.price * 100, // kwota w groszach
-        },
-        quantity: item.quantity,
-        adjustable_quantity: {
-          enabled: true,
-          minimum: 1,
-          maximum: variantMatch?.stock
+          quantity: item.quantity,
+          adjustable_quantity: {
+            enabled: true,
+            minimum: 1,
+            maximum: variantMatch?.stock,
+          },
         }
-      }}),
+      }),
       mode: "payment",
       success_url: `${request.headers.get("origin")}/success?session_id={CHECKOUT_SESSION_ID}`,
       cancel_url: `${request.headers.get("origin")}/canceled`,
       metadata: {
         ...shippingInfo,
-      }
+      },
     })
 
     return NextResponse.json({ sessionId: session.id }, { status: 200 })
@@ -95,7 +103,11 @@ export async function GET() {
   )
 }
 
-
-function findVariantMatch(variants: (Variant & { product: Product })[], item: ICartItem): Variant & { product: Product } {
-  return variants.find((variant) => variant.id === item.variantId) as Variant & { product: Product }
+function findVariantMatch(
+  variants: (Variant & { product: Product })[],
+  item: ICartItem
+): Variant & { product: Product } {
+  return variants.find(
+    (variant) => variant.id === item.variantId
+  ) as Variant & { product: Product }
 }
