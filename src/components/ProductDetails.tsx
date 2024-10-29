@@ -116,22 +116,22 @@ export default function ProductDetails({
           {/* Navigation Buttons - Now with higher z-index */}
           <div className="absolute inset-0 z-10 flex items-center justify-between px-4">
             <motion.button
-              whileHover={{ scale: 1.1 }}
+              whileHover={{ scale: 1.1, marginLeft: -4 }}
               whileTap={{ scale: 0.9 }}
               onClick={prevImage}
-              className="rounded-full bg-white p-2 shadow-md"
+              className="rounded-full bg-accent-foreground p-2"
               aria-label="Previous image"
             >
-              <ChevronLeft className="h-6 w-6 text-gray-800" />
+              <ChevronLeft className="h-6 w-6 text-white" />
             </motion.button>
             <motion.button
-              whileHover={{ scale: 1.1 }}
+              whileHover={{ scale: 1.1, marginRight: -4 }}
               whileTap={{ scale: 0.9 }}
               onClick={nextImage}
-              className="rounded-full bg-white p-2 shadow-md"
+              className="rounded-full bg-accent-foreground p-2"
               aria-label="Next image"
             >
-              <ChevronRight className="h-6 w-6 text-gray-800" />
+              <ChevronRight className="h-6 w-6 text-white" />
             </motion.button>
           </div>
         </div>
@@ -162,6 +162,7 @@ export default function ProductDetails({
                 }`}
               >
                 <Image
+                  draggable={false}
                   src={image}
                   fill
                   sizes="80px"
@@ -196,12 +197,12 @@ export default function ProductDetails({
         </div>
       </div>
 
-      {/* Rest of the component remains the same */}
+      {/* Rest of the component */}
       <div className="flex w-full flex-col items-start justify-start">
         <h1 className="w-full py-4 text-2xl font-semibold sm:text-3xl md:text-4xl lg:pt-0">
           {product.name}
         </h1>
-        <Separator className="" />
+        <Separator className="bg-accent-foreground" />
         <div className="flex flex-col items-start justify-around md:flex-row md:justify-start md:gap-8 lg:flex-col">
           <div className="flex w-full max-w-full flex-col items-start justify-start truncate py-4 lg:w-full lg:flex-col lg:py-0">
             <p className="text-wrap break-words pb-4 text-neutral-700 lg:py-4">
@@ -258,18 +259,7 @@ export default function ProductDetails({
             >
               <MinusIcon className="h-4 w-4" />
             </Button>
-            <Input
-              type="number"
-              min="1"
-              max="99"
-              className="w-14 rounded-none border-0 text-center text-xl font-medium [appearance:textfield] [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
-              value={quantity}
-              onChange={(e) =>
-                setQuantity(
-                  Math.max(1, Math.min(99, parseInt(e.target.value) || 1))
-                )
-              }
-            />
+            <span className="bg-white px-4 py-1">{quantity}</span>
             <Button
               variant="ghost"
               size="icon"

@@ -5,7 +5,7 @@ import { Product } from "@prisma/client"
 export default async function ProductsPage() {
   const products: Product[] = await prisma.product.findMany()
   return (
-    <div className="flex min-h-screen flex-col bg-background-secondary">
+    <div className="flex min-h-screen flex-col bg-background-secondary bg-[url('/assets/lines-background.svg')] bg-center">
       <main className="container mx-auto flex-grow px-4 py-8">
         <h2 className="mb-8 text-3xl font-bold text-slate-700">
           Nasze produkty

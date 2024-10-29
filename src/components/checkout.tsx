@@ -85,7 +85,6 @@ export default function Checkout() {
       setIsLoading(false)
     }
     fetchCartDetails()
-    
   }, [state.items])
 
   if (isLoading) {
@@ -101,7 +100,7 @@ export default function Checkout() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-100 py-12">
+    <div className="min-h-screen bg-neutral-50 py-12">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <h1 className="mb-10 text-3xl font-extrabold text-gray-900">
           Checkout
@@ -112,12 +111,12 @@ export default function Checkout() {
               Order Summary
             </h2>
             <div className="overflow-hidden bg-white shadow sm:rounded-lg">
-              <ul className="divide-y divide-gray-200">
+              <ul className="flex flex-col gap-4 p-4">
                 {cartDetails.items.map((item) => (
                   <CartItem key={item.id} item={item} />
                 ))}
               </ul>
-              <div className="px-4 py-4 sm:px-6">
+              <div className="px-4 pb-4 sm:px-6">
                 <div className="flex justify-between text-lg font-medium">
                   <p>Razem</p>
                   <p>{cartDetails.total.toFixed(2)}zł</p>

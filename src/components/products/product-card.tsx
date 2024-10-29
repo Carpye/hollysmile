@@ -20,7 +20,7 @@ export function ProductCard({
   return (
     <Link
       href={`/produkty/${id}`}
-      className="group relative flex w-full max-w-[350px] flex-col overflow-hidden rounded-xl bg-background p-3 transition-transform duration-100 hover:scale-110 active:scale-105 md:p-4"
+      className="group relative flex w-full max-w-[350px] flex-col overflow-hidden rounded-xl bg-background p-3 shadow-lg transition-transform duration-100 hover:scale-110 active:scale-105 md:p-4"
     >
       <div className="relative aspect-square w-full overflow-hidden rounded-lg">
         <Image
