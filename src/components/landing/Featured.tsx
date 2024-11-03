@@ -7,6 +7,7 @@ import { useEffect, useRef, useState } from "react"
 import { useInView } from "framer-motion"
 import { Product } from "@prisma/client"
 import { InView } from "../motion/InView"
+import Link from "next/link"
 
 export default function Featured({ products }: { products: Product[] }) {
   const ref = useRef(null)
@@ -78,7 +79,7 @@ export default function Featured({ products }: { products: Product[] }) {
         viewOptions={{ once: true }}
       >
         <Button className="w-full bg-[#9D8189] text-background transition-all hover:scale-105 sm:w-auto">
-          Sprawdź więcej!
+          <Link href={"/produkty"}>Sprawdź więcej!</Link>
         </Button>
       </InView>
     </>

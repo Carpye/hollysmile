@@ -9,6 +9,7 @@ import CartItem from "./cart/cart-item"
 import { Button } from "./ui/button"
 import { Input } from "./ui/input"
 import { Label } from "./ui/label"
+import Link from "next/link"
 
 export interface ShippingFormInputs {
   email: string
@@ -92,25 +93,21 @@ export default function Checkout() {
   }
 
   if (!cartDetails || cartDetails.items.length === 0) {
-    return (
-      <div className="py-12 text-center">
-        Your cart is empty. Please add some items before checking out.
-      </div>
-    )
+    return <div className="h-screen py-12 text-center">Koszyk jest pusty</div>
   }
 
   return (
-    <div className="min-h-screen bg-neutral-50 py-12">
+    <div className="min-h-screen bg-background py-12">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <h1 className="mb-10 text-3xl font-extrabold text-gray-900">
-          Checkout
+          Podsumowanie
         </h1>
         <div className="grid grid-cols-1 gap-10 md:grid-cols-2">
           <div>
             <h2 className="mb-6 text-2xl font-bold text-gray-900">
-              Order Summary
+              Zamówienie
             </h2>
-            <div className="overflow-hidden bg-white shadow sm:rounded-lg">
+            <div className="overflow-hidden bg-background-secondary shadow sm:rounded-lg">
               <ul className="flex flex-col gap-4 p-4">
                 {cartDetails.items.map((item) => (
                   <CartItem key={item.id} item={item} />
@@ -130,7 +127,7 @@ export default function Checkout() {
             </h2>
             <form
               onSubmit={handleSubmit(onSubmit)}
-              className="overflow-hidden bg-white p-6 shadow sm:rounded-lg"
+              className="overflow-hidden bg-background-secondary p-6 shadow sm:rounded-lg"
             >
               <div className="grid grid-cols-1 gap-6">
                 <div>
@@ -204,6 +201,19 @@ export default function Checkout() {
                       {errors.inPostCode.message}
                     </p>
                   )}
+                  <Label htmlFor="inPostCode" className="text-sm text-gray-500">
+                    Obecnie wspierana jest tylko dostawa do paczkomatów InPost
+                    <br />
+                    Znajdź swój paczkomat{" "}
+                    <Link
+                      href={"https://inpost.pl/znajdz-paczkomat"}
+                      className="text-primary underline"
+                      target="_blank"
+                    >
+                      tutaj
+                    </Link>
+                    .
+                  </Label>
                 </div>
               </div>
               <Button type="submit" className="mt-6 w-full">

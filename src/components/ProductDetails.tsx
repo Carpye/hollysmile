@@ -1,8 +1,6 @@
 "use client"
-import { useEffect, useState, useRef } from "react"
-import { Button } from "./ui/button"
-import { Separator } from "./ui/separator"
-import { useCartActions } from "./cart/cart-context"
+import { Product, Variant } from "@prisma/client"
+import { AnimatePresence, motion } from "framer-motion"
 import {
   ChevronLeft,
   ChevronRight,
@@ -10,10 +8,12 @@ import {
   PlusIcon,
   ShoppingBasket,
 } from "lucide-react"
-import { Input } from "./ui/input"
-import { Product, Variant } from "@prisma/client"
 import Image from "next/image"
-import { motion, AnimatePresence } from "framer-motion"
+import { useEffect, useRef, useState } from "react"
+import { useCart, useCartActions } from "./cart/cart-context"
+import { Button } from "./ui/button"
+import { Separator } from "./ui/separator"
+import OptimizedImage from "./OptimizedImage"
 
 export default function ProductDetails({
   product,
@@ -28,14 +28,25 @@ export default function ProductDetails({
   const carouselRef = useRef<HTMLDivElement>(null)
   const [dragConstraints, setDragConstraints] = useState({ right: 0, left: 0 })
 
-  const incrementQuantity = () => setQuantity((prev) => Math.min(prev + 1, 99))
-  const decrementQuantity = () => setQuantity((prev) => Math.max(prev - 1, 1))
-
-  const { addToCart } = useCartActions()
-
   const [selectedVariant, setSelectedVariant] = useState<Variant>(
     product.variants[0]
   )
+  const incrementQuantity = () =>
+    setQuantity((prev) => Math.min(prev + 1, selectedVariant.stock))
+  const decrementQuantity = () => setQuantity((prev) => Math.max(prev - 1, 1))
+
+  const { addToCart } = useCartActions()
+  const {
+    state: { items: cartItems },
+  } = useCart()
+
+  console.log(cartItems)
+
+  const currentVariantQuantityInCart =
+    cartItems.find(
+      (item) =>
+        item.productId === product.id && item.variantId === selectedVariant.id
+    )?.quantity ?? 0
 
   useEffect(() => {
     if (carouselRef.current) {
@@ -102,11 +113,11 @@ export default function ProductDetails({
               }}
               className="absolute h-full w-full"
             >
-              <Image
+              <OptimizedImage
                 src={product.images[currentImageIndex] ?? "/placeholder.svg"}
                 fill
                 priority
-                quality={90}
+                // quality={90}
                 alt={`${product.name} - Image ${currentImageIndex + 1}`}
                 className="object-cover"
               />
@@ -244,32 +255,42 @@ export default function ProductDetails({
             whileHover={{ scale: 1.02 }}
             whileTap={{ scale: 0.98 }}
             className="xs:w-[340px] flex w-full items-center justify-center gap-2 rounded-xl bg-[#9D8189] px-4 py-6 text-xl text-white shadow-xl sm:w-auto"
-            onClick={() => addToCart(product.id, selectedVariant.id)}
+            onClick={() => addToCart(product.id, selectedVariant.id, quantity)}
+            disabled={selectedVariant.stock - currentVariantQuantityInCart <= 0}
           >
             <ShoppingBasket /> Dodaj do koszyka
           </motion.button>
 
-          <div className="xs:w-[340px] flex w-full items-center justify-between rounded-xl border sm:w-auto">
+          <div className="xs:w-[340px] flex w-full items-center justify-between gap-2 rounded-xl border-2 border-[#9d8189] sm:w-auto">
             <Button
               variant="ghost"
               size="icon"
-              className="h-12 w-12 rounded-xl"
+              className="h-12 w-12 rounded-xl hover:bg-background-secondary"
               onClick={decrementQuantity}
               disabled={quantity <= 1}
             >
-              <MinusIcon className="h-4 w-4" />
+              <MinusIcon className="h-4 w-4 text-[#9d8189]" />
             </Button>
-            <span className="bg-white px-4 py-1">{quantity}</span>
+            <span className="rounded-lg px-4 py-2 text-[#9d8189]">
+              {quantity}
+            </span>
             <Button
               variant="ghost"
               size="icon"
-              className="h-12 w-12 rounded-xl"
+              className="h-12 w-12 rounded-xl hover:bg-background-secondary"
               onClick={incrementQuantity}
-              disabled={quantity >= 99}
+              disabled={
+                quantity >= selectedVariant.stock - currentVariantQuantityInCart
+              }
             >
-              <PlusIcon className="h-4 w-4" />
+              <PlusIcon className="h-4 w-4 text-[#9d8189]" />
             </Button>
           </div>
+          {selectedVariant.stock <= 10 && (
+            <p className="text-sm text-gray-500">
+              Pozostało {selectedVariant.stock} sztuk
+            </p>
+          )}
         </div>
       </div>
     </div>

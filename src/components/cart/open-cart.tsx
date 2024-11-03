@@ -71,7 +71,7 @@ const CartButton = () => {
               onClick={clearCart}
               className="mt-4 w-full border border-neutral-200 bg-neutral-100 text-black hover:border-none hover:bg-red-600 hover:text-white"
             >
-              Wyczyść cały koszyk
+              Wyczyść koszyk
             </Button>
           </>
         )}

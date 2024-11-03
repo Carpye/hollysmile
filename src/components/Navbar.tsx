@@ -17,12 +17,12 @@ const Navbar = ({ type = "regular" }: { type?: "regular" | "transparent" }) => {
       className={cn(
         "relative z-10 h-[128px] w-full p-8",
         type === "regular"
-          ? "bg-white text-slate-700"
+          ? "bg-[#fff1e6] text-slate-700"
           : "bg-transparent text-white"
       )}
     >
       <div className="mx-auto flex w-full max-w-screen-2xl items-center justify-between">
-        <div className="logo">
+        <Link className="logo" href={"/"}>
           <Image
             src={
               type === "regular"
@@ -34,7 +34,7 @@ const Navbar = ({ type = "regular" }: { type?: "regular" | "transparent" }) => {
             height={64}
             className="aspect-[2008/853]"
           />
-        </div>
+        </Link>
         <ul className="absolute-center hidden gap-8 text-xl lg:flex">
           <Link href={"/"}>Strona Główna</Link>
           <Link href={"/produkty"}>Produkty</Link>

@@ -8,9 +8,9 @@ export default function Footer() {
     <div className="relative z-10 w-full bg-foreground px-4 pt-4 text-white sm:px-8">
       <div className="ite flex flex-col justify-between gap-8 md:flex-row">
         <div className="flex flex-col items-center gap-2 py-4 md:items-start">
-          <div className="relative flex h-20 w-full">
+          <Link className="relative flex h-20 w-full" href={"/"}>
             <Image src={"/assets/logo-white.svg"} alt="XD" fill />
-          </div>
+          </Link>
 
           <p className="relative -top-2 flex w-full max-w-96 justify-center text-center font-light text-[#9D8189] md:text-left lg:w-72 lg:max-w-xs">
             Oferujemy innowacyjne szczoteczki do zębów, które dbają o zdrowie i
@@ -19,7 +19,7 @@ export default function Footer() {
         </div>
         <div className="flex gap-8 sm:gap-16 md:gap-12">
           <div className="flex flex-col gap-4 py-2">
-            <h1 className="text-lg text-background">Strona Główna</h1>
+            <h1 className="text-lg text-background">Linki</h1>
             <ul className="flex flex-col gap-4 text-base text-[#9D8189]">
               <Link href={"/"}>Przykładowy link</Link>
               <Link href={"/"}>Produkty</Link>

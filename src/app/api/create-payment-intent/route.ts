@@ -9,7 +9,7 @@ export async function POST(request: NextRequest) {
   console.log("Received create-payment-intent request")
 
   try {
-    const { total, shippingInfo, items } = (await request.json()) as {
+    const { shippingInfo, items } = (await request.json()) as {
       total: number
       shippingInfo: ShippingFormInputs
       items: { variantId: string; quantity: number; productId: string }[]
@@ -26,9 +26,6 @@ export async function POST(request: NextRequest) {
       },
     })
 
-    console.log(items)
-    console.log(variants)
-
     if (variants.length !== items.length) {
       return NextResponse.json(
         { message: "Nie udało się utworzyć sesji płatności" },
@@ -39,26 +36,6 @@ export async function POST(request: NextRequest) {
     // Tworzenie sesji płatności Stripe
     const session = await stripe.checkout.sessions.create({
       payment_method_types: ["card", "blik"],
-      // line_items: [
-      //   {
-      //     price_data: {
-      //       currency: "pln",
-      //       product_data: {
-      //         name: "Szczoteczka Holly Smile",
-
-      //       },
-      //       unit_amount: Number(price) * 100, // kwota w groszach
-
-      //     },
-      //     quantity: items[0].quantity,
-      //     adjustable_quantity: {
-      //       enabled: true,
-      //       minimum: 1,
-      //       maximum: 10,
-      //     },
-      //   },
-
-      // ],
       line_items: items.map((item) => {
         const variantMatch = findVariantMatch(variants, item)
         return {

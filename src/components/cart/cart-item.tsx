@@ -5,13 +5,15 @@ import { useCartActions } from "./cart-context"
 import Link from "next/link"
 import { Trash2 } from "lucide-react"
 import { CartDetails } from "@/types"
+import CartItemQuantitySelector from "./ItemQuantitySelector"
+import { Button } from "../ui/button"
 
 export default function CartItem({
   item,
 }: {
   item: CartDetails["items"][number]
 }) {
-  const { removeFromCart, updateQuantity } = useCartActions()
+  const { removeFromCart } = useCartActions()
 
   return (
     <div
@@ -34,54 +36,22 @@ export default function CartItem({
             >
               {item.product.name}
             </Link>
-            <p className="flex items-center gap-2">Wariant: {item.name}</p>
+            <p className="flex items-center gap-2">Kolor: {item.name}</p>
             <p className="text-gray-600">
               {item.product.price.toFixed(2)} zł / szt.
             </p>
           </div>
-          <CartItemQuantitySelector
-            item={item}
-            updateQuantity={updateQuantity}
-            removeFromCart={removeFromCart}
-          />
+          <CartItemQuantitySelector item={item} />
         </div>
       </div>
-      <button
-        className="flex h-min !max-w-[40px] grow items-center justify-center rounded-xl bg-zinc-100 p-2 text-black transition-all hover:bg-red-500/25 hover:text-red-500"
+      <Button
+        variant={"ghost"}
+        size={"icon"}
+        className="flex h-min items-center justify-center rounded-xl bg-background bg-zinc-100 p-2 text-black transition-all hover:bg-red-500/25 hover:text-red-500"
         onClick={() => removeFromCart(item.id)}
       >
         <Trash2 />
-      </button>
-    </div>
-  )
-}
-
-function CartItemQuantitySelector({
-  item,
-  updateQuantity,
-  removeFromCart,
-}: {
-  item: CartDetails["items"][number]
-  updateQuantity: (id: string, quantity: number) => void
-  removeFromCart: (id: string) => void
-}) {
-  return (
-    <div className="flex items-center">
-      <button
-        onClick={() => updateQuantity(item.id, Math.max(1, item.quantity - 1))}
-        className="rounded-l bg-zinc-100 px-2 py-1 font-medium"
-        disabled={item.quantity <= 1}
-      >
-        -
-      </button>
-      <span className="bg-white px-4 py-1">{item.quantity}</span>
-      <button
-        onClick={() => updateQuantity(item.id, item.quantity + 1)}
-        className="rounded-r bg-zinc-100 px-2 py-1 font-medium"
-        disabled={item.quantity >= item.stock}
-      >
-        +
-      </button>
+      </Button>
     </div>
   )
 }

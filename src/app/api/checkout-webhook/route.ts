@@ -38,12 +38,12 @@ export async function POST(request: NextRequest) {
 
   if (event.type === "checkout.session.completed") {
     const session = event.data.object as Stripe.Checkout.Session
-    console.log("session: ", session)
+    // console.log("session: ", session)
 
     const lineItems = await stripe.checkout.sessions.listLineItems(session.id, {
       expand: ["data.price.product"],
     })
-    console.log("lineItems: ", lineItems)
+    // console.log("lineItems: ", lineItems)
 
     const variantIds = lineItems.data
       .map((item) => {
@@ -51,13 +51,13 @@ export async function POST(request: NextRequest) {
         return product.metadata.variantId
       })
       .filter(Boolean)
-    console.log("variantIds: ", variantIds)
+    // console.log("variantIds: ", variantIds)
 
     const productDetails = await prisma.variant.findMany({
       where: { id: { in: variantIds } },
       include: { product: true },
     })
-    console.log("productDetails: ", productDetails)
+    // console.log("productDetails: ", productDetails)
 
     const productDetailsWithQuantity = productDetails.map((product) => ({
       ...product,
@@ -68,7 +68,7 @@ export async function POST(request: NextRequest) {
             product.id
         )?.quantity || 0,
     }))
-    console.log("productDetailsWithQuantity: ", productDetailsWithQuantity)
+    // console.log("productDetailsWithQuantity: ", productDetailsWithQuantity)
 
     // Aktualizacja ilości w bazie danych
     for (const variant of productDetailsWithQuantity) {
@@ -77,7 +77,7 @@ export async function POST(request: NextRequest) {
           where: { id: variant.id },
           data: { stock: { decrement: variant.quantity } },
         })
-        console.log(`Zaktualizowano ilość dla wariantu ${variant.id}`)
+        // console.log(`Zaktualizowano ilość dla wariantu ${variant.id}`)
       } catch (error) {
         console.error(
           `Błąd podczas aktualizacji ilości dla wariantu ${variant.id}:`,
@@ -88,14 +88,14 @@ export async function POST(request: NextRequest) {
 
     const shippingInfo: ShippingFormInputs =
       session.metadata as unknown as ShippingFormInputs
-    console.log("shippingInfo: ", shippingInfo)
+    // console.log("shippingInfo: ", shippingInfo)
 
     // Send order confirmation to customer
     try {
       await resend.emails.send({
-        from: "Holly Smile <hollysmile@thefinalpath.net>",
+        from: `Holly Smile <${process.env.WEBSITE_EMAIL}>`,
         to: [shippingInfo.email],
-        subject: "Order confirmation " + session.id,
+        subject: "Potwierdzenie zamówienia z Holly Smile",
         react: CustomerEmailTemplate({
           shippingInfo,
           productDetails: productDetailsWithQuantity,
@@ -109,9 +109,9 @@ export async function POST(request: NextRequest) {
     // Send order notification to owner
     try {
       await resend.emails.send({
-        from: "Holly Smile <hollysmile@thefinalpath.net>",
+        from: `Holly Smile <${process.env.WEBSITE_EMAIL}>`,
         to: [process.env.OWNER_EMAIL!],
-        subject: "New order " + session.id,
+        subject: "Nowe zamówienie z Holly Smile - " + session.id,
         react: OwnerEmailTemplate({
           shippingInfo,
           sessionData: session,
