@@ -109,7 +109,7 @@ const AboutUs = () => {
           className="relative h-64 min-h-[300px] lg:col-span-3 lg:h-full"
         >
           <Image
-            src="/assets/bg1.png"
+            src="/assets/bg1.webp"
             fill
             alt=""
             className="rounded-2xl object-cover"

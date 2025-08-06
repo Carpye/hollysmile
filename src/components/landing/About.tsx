@@ -100,7 +100,7 @@ export default function About() {
         >
           <div className="relative h-full w-full">
             <Image
-              src={"/images/DSCF2532.jpg"}
+              src={"/images/image1.webp"}
               fill
               alt="Holly Smile product showcase"
               className="rounded-xl object-cover shadow-xl"
@@ -115,7 +115,7 @@ export default function About() {
         >
           <div className="relative h-full w-full">
             <Image
-              src={"/assets/bg1.png"}
+              src={"/assets/bg1.webp"}
               fill
               alt="Product feature"
               className="rounded-xl object-cover shadow-xl"
@@ -130,7 +130,7 @@ export default function About() {
         >
           <div className="relative h-full w-full">
             <Image
-              src={"/assets/bg3.png"}
+              src={"/assets/bg3.webp"}
               fill
               alt="Product showcase"
               className="rounded-xl object-cover shadow-lg"

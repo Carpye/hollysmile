@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from "next/server"
 import stripe from "@/lib/stripe"
 import { prisma } from "@/lib/prisma"
 import { ShippingFormInputs } from "@/components/checkout"
-import { Product, Variant } from "@prisma/client"
+import { Product, Variant } from "@/../prisma/generated/client"
 import { ICartItem } from "@/components/cart/cart-context"
 
 export async function POST(request: NextRequest) {

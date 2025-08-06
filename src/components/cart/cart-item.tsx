@@ -25,6 +25,7 @@ export default function CartItem({
           <Image
             alt="Zdjęcie produktu"
             src={item.product.mainImage ?? ""}
+            className="object-cover"
             fill
           />
         </div>

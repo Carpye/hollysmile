@@ -89,7 +89,11 @@ export default function Checkout() {
   }, [state.items])
 
   if (isLoading) {
-    return <div className="py-12 text-center">Loading...</div>
+    return (
+      <div className="h-screen bg-background py-12 text-center">
+        Ładowanie...
+      </div>
+    )
   }
 
   if (!cartDetails || cartDetails.items.length === 0) {

@@ -90,6 +90,33 @@ export async function POST(request: NextRequest) {
       session.metadata as unknown as ShippingFormInputs
     // console.log("shippingInfo: ", shippingInfo)
 
+    // Create order in the database
+    try {
+      const order = await prisma.order.create({
+        data: {
+          id: session.id,
+          email: shippingInfo.email,
+          city: shippingInfo.city,
+          inpostCode: shippingInfo.inPostCode,
+          phone: shippingInfo.phoneNumber,
+          info: JSON.stringify(
+            productDetailsWithQuantity.map((variant) => ({
+              variantId: variant.id,
+              quantity: variant.quantity,
+              productName: variant.product.name,
+              variantName: variant.name,
+              price: variant.product.price,
+              productImage: variant.product.mainImage,
+              color: variant.color,
+            }))
+          ),
+        },
+      })
+      console.log("Order created successfully:", order)
+    } catch (error) {
+      console.error("Error creating order:", error)
+    }
+
     // Send order confirmation to customer
     try {
       await resend.emails.send({
@@ -129,3 +156,7 @@ export async function POST(request: NextRequest) {
     headers: { "Content-Type": "application/json" },
   })
 }
+
+/*
+[{"id":"a78b13d5-484e-4254-b1e8-6d66d546d9d0","name":"Czarny","color":"#242424","stock":24,"price":null,"image":null,"productId":"9a4b8d7e-028c-45b1-8bec-aad3d96198f2","product":{"id":"9a4b8d7e-028c-45b1-8bec-aad3d96198f2","name":"Szczoteczka Soniczna","description":"Świetna szczoteczka soniczna","price":250,"stock":49,"mainImage":"https://dehjtwqjlvvbxcwvmvhr.supabase.co/storage/v1/object/public/hollysmile-images//DSCF2321.webp","images":["https://dehjtwqjlvvbxcwvmvhr.supabase.co/storage/v1/object/public/hollysmile-images//DSCF2321.webp","https://dehjtwqjlvvbxcwvmvhr.supabase.co/storage/v1/object/public/hollysmile-images//DSCF2375.webp","https://dehjtwqjlvvbxcwvmvhr.supabase.co/storage/v1/object/public/hollysmile-images//DSCF2400.webp","https://dehjtwqjlvvbxcwvmvhr.supabase.co/storage/v1/object/public/hollysmile-images//DSCF2404.webp","https://dehjtwqjlvvbxcwvmvhr.supabase.co/storage/v1/object/public/hollysmile-images//DSCF2427.webp","https://dehjtwqjlvvbxcwvmvhr.supabase.co/storage/v1/object/public/hollysmile-images//DSCF2437.webp","https://dehjtwqjlvvbxcwvmvhr.supabase.co/storage/v1/object/public/hollysmile-images//DSCF2493.webp","https://dehjtwqjlvvbxcwvmvhr.supabase.co/storage/v1/object/public/hollysmile-images//DSCF2670.webp"],"createdAt":"2024-09-11T08:34:36.743Z","updatedAt":"2024-09-13T06:38:40.773Z"},"quantity":1},{"id":"6d284164-5c97-46f8-9761-071f14202208","name":"Różowy","color":"#ffd3c4","stock":25,"price":null,"image":null,"productId":"9a4b8d7e-028c-45b1-8bec-aad3d96198f2","product":{"id":"9a4b8d7e-028c-45b1-8bec-aad3d96198f2","name":"Szczoteczka Soniczna","description":"Świetna szczoteczka soniczna","price":250,"stock":49,"mainImage":"https://dehjtwqjlvvbxcwvmvhr.supabase.co/storage/v1/object/public/hollysmile-images//DSCF2321.webp","images":["https://dehjtwqjlvvbxcwvmvhr.supabase.co/storage/v1/object/public/hollysmile-images//DSCF2321.webp","https://dehjtwqjlvvbxcwvmvhr.supabase.co/storage/v1/object/public/hollysmile-images//DSCF2375.webp","https://dehjtwqjlvvbxcwvmvhr.supabase.co/storage/v1/object/public/hollysmile-images//DSCF2400.webp","https://dehjtwqjlvvbxcwvmvhr.supabase.co/storage/v1/object/public/hollysmile-images//DSCF2404.webp","https://dehjtwqjlvvbxcwvmvhr.supabase.co/storage/v1/object/public/hollysmile-images//DSCF2427.webp","https://dehjtwqjlvvbxcwvmvhr.supabase.co/storage/v1/object/public/hollysmile-images//DSCF2437.webp","https://dehjtwqjlvvbxcwvmvhr.supabase.co/storage/v1/object/public/hollysmile-images//DSCF2493.webp","https://dehjtwqjlvvbxcwvmvhr.supabase.co/storage/v1/object/public/hollysmile-images//DSCF2670.webp"],"createdAt":"2024-09-11T08:34:36.743Z","updatedAt":"2024-09-13T06:38:40.773Z"},"quantity":2}]
+*/

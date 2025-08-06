@@ -1,5 +1,5 @@
 "use client"
-import { Product, Variant } from "@prisma/client"
+import { Product, Variant } from "@/../prisma/generated/client"
 import { AnimatePresence, motion } from "framer-motion"
 import {
   ChevronLeft,
@@ -111,13 +111,16 @@ export default function ProductDetails({
                 x: { type: "spring", stiffness: 300, damping: 30 },
                 opacity: { duration: 0.2 },
               }}
-              className="absolute h-full w-full"
+              className="absolute h-full w-full bg-neutral-100"
+              style={{
+                willChange: "opacity, transform",
+                backfaceVisibility: "hidden",
+              }}
             >
               <OptimizedImage
                 src={product.images[currentImageIndex] ?? "/placeholder.svg"}
                 fill
                 priority
-                // quality={90}
                 alt={`${product.name} - Image ${currentImageIndex + 1}`}
                 className="object-cover"
               />

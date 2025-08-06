@@ -1,23 +1,12 @@
 "use client"
-import React, { useEffect, useState } from "react"
-import {
-  OpenSheet,
-  Sheet,
-  SheetClose,
-  SheetContent,
-  SheetDescription,
-  SheetHeader,
-  SheetTitle,
-  SheetTrigger,
-} from "../ui/sheet"
-import { Button } from "../ui/button"
-import { ShoppingCart, Trash2 } from "lucide-react"
-import { useCart, useCartActions, ICartItem } from "./cart-context"
-import Image from "next/image"
-import Link from "next/link"
 import { getCartDetails } from "@/actions/cart"
-import { Product, Variant } from "@prisma/client"
 import { CartDetails } from "@/types"
+import { ShoppingCart } from "lucide-react"
+import Link from "next/link"
+import { useEffect, useState } from "react"
+import { Button } from "../ui/button"
+import { OpenSheet, SheetClose } from "../ui/sheet"
+import { useCart, useCartActions } from "./cart-context"
 import CartItem from "./cart-item"
 
 const CartButton = () => {
