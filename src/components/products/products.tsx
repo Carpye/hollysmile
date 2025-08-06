@@ -1,6 +1,6 @@
 "use client"
 import { prisma } from "@/lib/prisma"
-import { Product } from "@prisma/client"
+import { Product } from "@/../prisma/generated/client"
 import React from "react"
 import { ProductCard } from "./product-card"
 

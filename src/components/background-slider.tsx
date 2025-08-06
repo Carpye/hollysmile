@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react"
 import { motion, AnimatePresence } from "framer-motion"
+import Image from "next/image"
 
 export default function BackgroundSlider() {
   const [currentImage, setCurrentImage] = useState(0)
@@ -42,7 +43,7 @@ export default function BackgroundSlider() {
 
   return (
     <div className="relative h-full w-full overflow-hidden">
-      <AnimatePresence initial={false}>
+      <AnimatePresence initial={true}>
         <motion.div
           key={currentImage}
           variants={slideVariants}
@@ -50,12 +51,17 @@ export default function BackgroundSlider() {
           animate="center"
           exit="exit"
           className="absolute left-0 top-0 h-full w-full"
-          style={{
-            backgroundImage: `url(${images[currentImage]})`,
-            backgroundSize: "cover",
-            backgroundPosition: "center",
-          }}
-        />
+        >
+          <Image
+            src={images[currentImage]}
+            alt={`Slide ${currentImage}`}
+            fill
+            className="object-cover object-center"
+            priority
+            blurDataURL={images[currentImage]}
+            placeholder="blur"
+          />
+        </motion.div>
       </AnimatePresence>
     </div>
   )

@@ -2,7 +2,7 @@
 
 import { ICartItem } from "@/components/cart/cart-context"
 import { prisma } from "@/lib/prisma" // Assume this is your database connection
-import { Product, Variant } from "@prisma/client"
+import { Product, Variant } from "@/../prisma/generated/client"
 
 export async function getProductDetails(id: string) {
   // In a real application, you would fetch this from your database

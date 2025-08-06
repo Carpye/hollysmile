@@ -1,15 +1,15 @@
 import { ProductCard } from "@/components/products/product-card"
 import { prisma } from "@/lib/prisma"
-import { Product } from "@prisma/client"
+import { Product } from "@/../prisma/generated/client"
 import Image from "next/image"
 
 export default async function ProductsPage() {
   const products: Product[] = await prisma.product.findMany() // bg-[#fffbf9
   return (
-    <div className="flex min-h-screen flex-col bg-stone-900">
+    <div className="flex min-h-screen flex-col bg-background-secondary">
       <div className="relative h-72 w-full">
         <Image
-          src={"/assets/bg1.png"}
+          src={"/assets/bg1.webp"}
           alt="image"
           fill
           className="object-cover"

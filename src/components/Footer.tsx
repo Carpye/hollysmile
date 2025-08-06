@@ -24,6 +24,8 @@ export default function Footer() {
               <Link href={"/"}>Przykładowy link</Link>
               <Link href={"/"}>Produkty</Link>
               <Link href={"/"}>O nas</Link>
+              <Link href={"/"}>Polityka prywatności</Link>
+              <Link href={"/"}>Regulamin sklepu</Link>
             </ul>
           </div>
           <div className="flex flex-col gap-4 py-2">
@@ -35,7 +37,7 @@ export default function Footer() {
               </span>
               <span className="flex items-center justify-start gap-2">
                 <Mail size={16} />
-                happysmile@gmail.com
+                hollysmile@gmail.com
               </span>
               <span className="flex items-center justify-start gap-2">
                 <Pin size={16} />
@@ -48,7 +50,7 @@ export default function Footer() {
       <div className="py-4">
         <Separator className="bg-neutral-600" />
         <div className="flex justify-between gap-4 p-2 text-xs text-neutral-600 sm:text-sm">
-          <p>© Holly Smile - 2024 Wszelkie prawa zastrzeżone.</p>
+          <p>© Holly Smile - 2025 Wszelkie prawa zastrzeżone.</p>
           <p className="text-right">
             Made with ✨Passion✨ by{" "}
             <Link href={"https://github.com/Carpye"} className="underline">

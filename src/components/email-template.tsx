@@ -1,19 +1,19 @@
-import * as React from 'react';
-import { ShippingFormInputs } from './checkout';
-import Stripe from 'stripe';
-import { Product, Variant } from '@prisma/client';
+import * as React from "react"
+import { ShippingFormInputs } from "./checkout"
+import Stripe from "stripe"
+import { Product, Variant } from "@/../prisma/generated/client"
 
 interface EmailTemplateProps {
-  shippingInfo: ShippingFormInputs;
-  productDetails: (Variant & { product: Product, quantity: number } )[]
+  shippingInfo: ShippingFormInputs
+  productDetails: (Variant & { product: Product; quantity: number })[]
 }
 
 export const CustomerEmailTemplate: React.FC<Readonly<EmailTemplateProps>> = ({
   shippingInfo,
-  productDetails
+  productDetails,
 }) => (
   <div>
-    <h1 className='text-blue-500'>Dziękujemy za złożenie zamówienia!</h1>
+    <h1 className="text-blue-500">Dziękujemy za złożenie zamówienia!</h1>
     <p>Twoje zamówienie zostało przyjęte i jest w trakcie realizacji.</p>
     <p>Dane zamówienia:</p>
     <ul>
@@ -33,16 +33,21 @@ export const CustomerEmailTemplate: React.FC<Readonly<EmailTemplateProps>> = ({
         </li>
       ))}
     </ul>
-    <p>Całkowita wartość zamówienia: {productDetails.reduce((sum, item) => sum + item.product.price * item.quantity, 0)} zł</p>
+    <p>
+      Całkowita wartość zamówienia:{" "}
+      {productDetails.reduce(
+        (sum, item) => sum + item.product.price * item.quantity,
+        0
+      )}{" "}
+      zł
+    </p>
     <p>Dziękujemy za zakupy w Holly Smile!</p>
   </div>
-);
+)
 
-export const OwnerEmailTemplate: React.FC<Readonly<EmailTemplateProps & {sessionData: Stripe.Checkout.Session}>> =({
-  shippingInfo,
-  sessionData,
-  productDetails
-}) => (
+export const OwnerEmailTemplate: React.FC<
+  Readonly<EmailTemplateProps & { sessionData: Stripe.Checkout.Session }>
+> = ({ shippingInfo, sessionData, productDetails }) => (
   <div>
     <h1>Nowe zamówienie z Holly Smile</h1>
     <p>Numer zamówienia: {sessionData.id}</p>
@@ -64,6 +69,13 @@ export const OwnerEmailTemplate: React.FC<Readonly<EmailTemplateProps & {session
         </li>
       ))}
     </ul>
-    <p>Całkowita wartość zamówienia: {productDetails.reduce((sum, item) => sum + item.product.price * item.quantity, 0)} zł</p>
+    <p>
+      Całkowita wartość zamówienia:{" "}
+      {productDetails.reduce(
+        (sum, item) => sum + item.product.price * item.quantity,
+        0
+      )}{" "}
+      zł
+    </p>
   </div>
 )

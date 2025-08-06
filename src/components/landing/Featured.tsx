@@ -5,7 +5,7 @@ import { Button } from "../ui/button"
 import { TextEffect } from "../motion/TextEffect"
 import { useEffect, useRef, useState } from "react"
 import { useInView } from "framer-motion"
-import { Product } from "@prisma/client"
+import { Product } from "@/../prisma/generated/client"
 import { InView } from "../motion/InView"
 import Link from "next/link"
 
